@@ -1,0 +1,5606 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>攻旦小學堂 — 桃園私中入學考特訓</title>
+<style>
+  :root{
+    --ink:#1a1633; --paper:#fffaf0;
+    --grape:#6b3fa0; --grape-deep:#4a2870;
+    --mango:#ff9f1c; --coral:#ff5d73; --mint:#2ec4b6; --sky:#3da5d9;
+    --gold:#ffd23f; --shadow:rgba(74,40,112,.22);
+    --ok:#27ae60; --no:#e74c3c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    background:
+      radial-gradient(circle at 12% 16%, rgba(255,159,28,.18), transparent 42%),
+      radial-gradient(circle at 88% 84%, rgba(46,196,182,.20), transparent 45%),
+      linear-gradient(160deg,#fff6e6 0%,#fdeede 55%,#f6e7ff 100%);
+    color:var(--ink);min-height:100%;overflow-x:hidden;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:14px 16px 48px;}
+
+  /* 頂部 */
+  .topbar{background:linear-gradient(135deg,var(--grape),var(--grape-deep));
+    color:#fff;border-radius:22px;padding:14px 16px;
+    box-shadow:0 10px 26px var(--shadow);position:relative;overflow:hidden;}
+  .topbar::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;
+    height:120px;background:radial-gradient(circle,rgba(255,210,63,.35),transparent 70%);}
+  .tb-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+  .pet{font-size:42px;line-height:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25));}
+  .pet.happy{animation:bounce .6s;}
+  @keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-12px) scale(1.1)}60%{transform:translateY(0) scale(.96)}}
+  .tb-info{flex:1;}
+  .tb-name{font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .lvl-badge{background:var(--gold);color:var(--grape-deep);font-size:11px;
+    padding:2px 9px;border-radius:999px;font-weight:800;}
+  .xpbar{height:9px;background:rgba(255,255,255,.22);border-radius:99px;margin-top:7px;overflow:hidden;}
+  .xpfill{height:100%;background:linear-gradient(90deg,var(--mango),var(--gold));
+    border-radius:99px;width:0%;transition:width .7s cubic-bezier(.2,.8,.2,1);}
+  .tb-stats{display:flex;gap:13px;margin-top:10px;font-size:12px;position:relative;z-index:1;flex-wrap:wrap;}
+  .tb-stats div{display:flex;align-items:center;gap:4px;}
+  .tb-stats b{font-size:15px;}
+
+  .card{background:#fff;border-radius:22px;padding:20px;margin-top:16px;
+    box-shadow:0 8px 22px var(--shadow);border:1px solid rgba(107,63,160,.08);}
+  h2.section{font-size:18px;color:var(--grape-deep);margin-bottom:4px;}
+  .sub{font-size:13px;color:#8a7fa3;margin-bottom:14px;line-height:1.6;}
+
+  .subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .subj{border:none;border-radius:18px;padding:18px 12px;font-family:inherit;
+    cursor:pointer;color:#fff;font-weight:800;font-size:16px;text-align:left;
+    box-shadow:0 6px 16px var(--shadow);transition:transform .15s;}
+  .subj:active{transform:scale(.96);}
+  .subj small{display:block;font-weight:500;font-size:11px;opacity:.9;margin-top:5px;}
+  .subj .ico{font-size:26px;display:block;margin-bottom:6px;}
+  .s-math{background:linear-gradient(135deg,var(--coral),#ff8585);}
+  .s-chi{background:linear-gradient(135deg,var(--grape),#9b6fd4);}
+  .s-eng{background:linear-gradient(135deg,var(--sky),#5cc8e8);}
+  .s-mix{background:linear-gradient(135deg,var(--mint),#5dd9b8);}
+
+  .diff-row{display:flex;gap:8px;margin-top:14px;}
+  .diff-btn{flex:1;border:2px solid rgba(107,63,160,.18);background:#fff;
+    border-radius:14px;padding:9px 4px;font-family:inherit;font-weight:700;
+    font-size:13px;cursor:pointer;color:var(--grape-deep);transition:.15s;}
+  .diff-btn.on{background:var(--grape);color:#fff;border-color:var(--grape);}
+
+  .map{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .node{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-weight:800;font-size:15px;
+    border:3px solid #fff;box-shadow:0 4px 10px var(--shadow);}
+  .node.done{background:linear-gradient(135deg,var(--mint),#5dd9b8);color:#fff;}
+  .node.now{background:linear-gradient(135deg,var(--mango),var(--gold));color:#fff;
+    animation:pulse 1.4s infinite;}
+  .node.lock{background:#e9e3f3;color:#b3a8c9;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,159,28,.5)}50%{box-shadow:0 0 0 10px rgba(255,159,28,0)}}
+
+  .qmeta{display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;color:#8a7fa3;margin-bottom:6px;}
+  .tag{background:#f0e9fb;color:var(--grape);padding:3px 10px;border-radius:999px;font-weight:700;}
+  .combo{color:var(--coral);font-weight:800;}
+  .qtext{font-size:17px;line-height:1.75;font-weight:600;margin:14px 0 18px;}
+  .opt{display:block;width:100%;text-align:left;background:#fff;
+    border:2px solid rgba(107,63,160,.16);border-radius:16px;padding:14px 16px;
+    margin-bottom:11px;font-family:inherit;font-size:15px;cursor:pointer;
+    color:var(--ink);transition:.15s;font-weight:600;}
+  .opt:hover{border-color:var(--grape);}
+  .opt:active{transform:scale(.98);}
+  .opt.correct{background:#eafbf1;border-color:var(--ok);color:#1c7a47;}
+  .opt.wrong{background:#fdeceb;border-color:var(--no);color:#b13228;}
+  .opt:disabled{cursor:default;}
+  .opt .letter{display:inline-block;width:24px;height:24px;line-height:24px;
+    text-align:center;background:#f0e9fb;color:var(--grape);border-radius:8px;
+    font-weight:800;margin-right:10px;font-size:13px;}
+
+  .feedback{margin-top:8px;border-radius:18px;padding:16px;display:none;
+    animation:slideup .35s ease;}
+  @keyframes slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .feedback.show{display:block;}
+  .feedback.good{background:linear-gradient(135deg,#eafbf1,#dff7ea);border:1px solid #b6e8cb;}
+  .feedback.bad{background:linear-gradient(135deg,#fff4ec,#ffeede);border:1px solid #ffd9b8;}
+  .fb-head{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .fb-head .av{font-size:24px;}
+  .fb-body{font-size:14px;line-height:1.8;color:#3a3354;}
+  .fb-body .lbl{font-weight:800;color:var(--grape-deep);}
+  .next-btn{margin-top:14px;width:100%;border:none;border-radius:16px;padding:15px;
+    background:linear-gradient(135deg,var(--grape),var(--grape-deep));color:#fff;
+    font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;
+    box-shadow:0 6px 16px var(--shadow);transition:transform .15s;}
+  .next-btn:active{transform:scale(.97);}
+
+  .result-emoji{font-size:64px;text-align:center;margin:6px 0;}
+  .score-big{font-size:46px;font-weight:800;text-align:center;color:var(--grape-deep);}
+  .score-sub{text-align:center;color:#8a7fa3;font-size:14px;margin-bottom:8px;}
+  .breakdown{display:flex;gap:10px;margin:16px 0;}
+  .bd{flex:1;background:#f7f2fd;border-radius:14px;padding:12px;text-align:center;}
+  .bd b{display:block;font-size:22px;color:var(--grape-deep);}
+  .bd span{font-size:11px;color:#8a7fa3;}
+
+  .pop{position:fixed;left:50%;top:40%;transform:translateX(-50%);
+    font-size:28px;font-weight:800;color:var(--mango);pointer-events:none;
+    text-shadow:0 2px 8px rgba(255,159,28,.4);z-index:99;
+    animation:popup 1.2s ease forwards;}
+  @keyframes popup{0%{opacity:0;transform:translate(-50%,10px) scale(.5)}
+    25%{opacity:1;transform:translate(-50%,-10px) scale(1.15)}
+    100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+
+  .ghost-btn{background:none;border:none;color:var(--grape);font-family:inherit;
+    font-size:14px;font-weight:700;cursor:pointer;text-decoration:underline;
+    padding:8px;display:block;margin:14px auto 0;}
+
+  .daily{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#fff6e6,#ffeede);
+    border-radius:16px;padding:12px 14px;margin-top:12px;border:1px dashed var(--mango);}
+  .daily .fire{font-size:26px;}
+  .daily-txt{flex:1;font-size:13px;line-height:1.5;}
+  .daily-txt b{color:var(--coral);}
+
+  /* 排行榜 */
+  .lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;
+    border-radius:14px;margin-bottom:8px;background:#f7f2fd;}
+  .lb-row.me{background:linear-gradient(135deg,#fff1d6,#ffe6c2);border:1px solid var(--mango);}
+  .lb-rank{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-weight:800;font-size:13px;background:#fff;color:var(--grape);}
+  .lb-rank.r1{background:var(--gold);} .lb-rank.r2{background:#d8d8d8;} .lb-rank.r3{background:#e8b07a;}
+  .lb-name{flex:1;font-weight:700;font-size:14px;}
+  .lb-xp{font-weight:800;color:var(--grape-deep);font-size:14px;}
+
+  .badge-grid{display:flex;flex-wrap:wrap;gap:14px;}
+  .bdg{text-align:center;width:66px;}
+  .bdg .b-ico{font-size:34px;}
+  .bdg .b-nm{font-size:10px;color:#8a7fa3;margin-top:3px;}
+
+  /* 50級進化圖鑑 */
+  .lv-cell{aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:4px 2px;text-align:center;
+    border:1px solid rgba(107,63,160,.1);position:relative;transition:transform .2s;}
+  .lv-cell .lv-num{font-size:9px;font-weight:800;opacity:.7;line-height:1;}
+  .lv-cell .lv-emoji{font-size:22px;line-height:1.2;margin:2px 0 1px;}
+  .lv-cell .lv-nm{font-size:9px;line-height:1.1;font-weight:700;}
+  .lv-cell.done{background:linear-gradient(135deg,#dff7ea,#c3eed4);color:#1c7a47;}
+  .lv-cell.done::after{content:"✓";position:absolute;top:1px;right:3px;font-size:9px;color:var(--ok);font-weight:800;}
+  .lv-cell.cur{background:linear-gradient(135deg,var(--mango),var(--gold));color:#fff;
+    box-shadow:0 4px 12px rgba(255,159,28,.5);transform:scale(1.05);animation:lvPulse 1.5s infinite;}
+  .lv-cell.next{background:linear-gradient(135deg,#fff5dc,#fffae8);color:var(--grape-deep);
+    border:2px solid var(--mango);animation:lvBlink 2s infinite;}
+  .lv-cell.locked{background:#f0e9fb;color:#9a8cb8;}
+  .lv-cell.top{background:linear-gradient(135deg,#3da5d9,#5cc8e8);color:#fff;
+    box-shadow:0 6px 16px rgba(61,165,217,.4);}
+  .lv-cell.top.locked{background:linear-gradient(135deg,#cbd5e0,#b3a8c9);}
+  @keyframes lvPulse{0%,100%{box-shadow:0 4px 12px rgba(255,159,28,.5)}50%{box-shadow:0 4px 22px rgba(255,159,28,.9)}}
+  @keyframes lvBlink{0%,100%{border-color:var(--mango)}50%{border-color:var(--coral)}}
+
+  /* 設定名稱對話 */
+  .modal{position:fixed;inset:0;background:rgba(26,22,51,.55);display:flex;
+    align-items:center;justify-content:center;z-index:200;padding:20px;}
+  .modal-box{background:#fff;border-radius:22px;padding:24px;max-width:340px;width:100%;
+    box-shadow:0 20px 50px rgba(0,0,0,.3);}
+  .modal-box h3{color:var(--grape-deep);font-size:19px;margin-bottom:6px;}
+  .modal-box p{font-size:13px;color:#8a7fa3;margin-bottom:16px;line-height:1.6;}
+  .modal-box input{width:100%;border:2px solid rgba(107,63,160,.2);border-radius:14px;
+    padding:13px;font-family:inherit;font-size:16px;margin-bottom:14px;}
+  .modal-box input:focus{outline:none;border-color:var(--grape);}
+
+  .hidden{display:none!important;}
+  footer{text-align:center;font-size:11px;color:#b3a8c9;margin-top:24px;line-height:1.7;}
+  .save-tag{font-size:11px;color:var(--mint);text-align:center;margin-top:10px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="tb-row">
+      <div class="pet" id="pet">🐣</div>
+      <div class="tb-info">
+        <div class="tb-name">
+          <span id="petName">小旦</span>
+          <span class="lvl-badge">Lv.<span id="lvl">1</span> <span id="lvlTitle">學徒</span></span>
+        </div>
+        <div class="xpbar"><div class="xpfill" id="xpfill"></div></div>
+      </div>
+    </div>
+    <div class="tb-stats">
+      <div>⭐ <b id="totalXp">0</b> 經驗</div>
+      <div>🏆 <b id="badgeCnt">0</b> 徽章</div>
+      <div>🎯 <b id="acc">—</b> 正確率</div>
+      <div>📚 <b id="doneCnt">0</b> 已練</div>
+    </div>
+  </div>
+
+  <!-- 主選單 -->
+  <div id="screenHome">
+    <div class="card">
+      <h2 class="section">選一科開始特訓 💪</h2>
+      <p class="sub">對準桃園復旦・新興國中入學考方向：題目活、重觀念、五六年級加深加廣到國一。</p>
+      <div class="subj-grid">
+        <button class="subj s-math" onclick="startQuiz('math')">
+          <span class="ico">🔢</span>數學<small>配分最高・最關鍵主科</small></button>
+        <button class="subj s-chi" onclick="startQuiz('chinese')">
+          <span class="ico">📖</span>國文<small>閱讀理解・成語語文</small></button>
+        <button class="subj s-eng" onclick="startQuiz('english')">
+          <span class="ico">🔤</span>英文<small>文法・字彙・閱讀</small></button>
+        <button class="subj s-mix" onclick="startQuiz('mix')">
+          <span class="ico">🎲</span>綜合模考<small>三科混合・模擬實戰</small></button>
+      </div>
+      <div style="margin-top:18px;">
+        <h2 class="section" style="font-size:15px;">難度</h2>
+        <div class="diff-row">
+          <button class="diff-btn on" data-d="0" onclick="setDiff(0,this)">🌱 全部</button>
+          <button class="diff-btn" data-d="1" onclick="setDiff(1,this)">😊 基礎</button>
+          <button class="diff-btn" data-d="2" onclick="setDiff(2,this)">🔥 進階</button>
+          <button class="diff-btn" data-d="3" onclick="setDiff(3,this)">⚡ 挑戰</button>
+        </div>
+      </div>
+      <div class="daily">
+        <span class="fire">🔥</span>
+        <div class="daily-txt">
+          連續打卡 <b id="streak">0</b> 天！每天練 5 題，<span id="dailyMsg">今天還沒練習，現在開始衝一波！</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section">闖關地圖 🗺️</h2>
+      <p class="sub">每完成一回（5 題、達 60 分）解鎖下一關，全破拿徽章！</p>
+      <div class="map" id="mapEl"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section">排行榜 🏅</h2>
+      <p class="sub">和班上同學一起拚！經驗值越高排越前面。</p>
+      <div id="lbList"></div>
+      <button class="ghost-btn" onclick="addRivalScore()">🔄 更新同學分數（模擬）</button>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#fff8e1,#fff0d6);">
+      <h2 class="section">PK 同學 ⚔️</h2>
+      <p class="sub">產出你的「戰績圖」傳給同學，比一比誰練得多、誰等級高！</p>
+      <div id="pkCard" style="background:linear-gradient(135deg,var(--grape),var(--grape-deep));color:#fff;border-radius:20px;padding:20px;margin:10px 0;text-align:center;">
+        <div id="pkPet" style="font-size:60px;line-height:1;margin-bottom:6px;">🐣</div>
+        <div id="pkTitle" style="font-size:13px;opacity:.85;margin-bottom:4px;">攻旦小學堂</div>
+        <div id="pkName" style="font-size:20px;font-weight:800;margin-bottom:6px;">我的戰績</div>
+        <div id="pkLvl" style="font-size:15px;background:var(--gold);color:var(--grape-deep);display:inline-block;padding:3px 14px;border-radius:999px;font-weight:800;margin-bottom:12px;">Lv.1 新手</div>
+        <div style="display:flex;justify-content:space-around;gap:6px;font-size:11px;margin-top:6px;">
+          <div><div id="pkXp" style="font-size:18px;font-weight:800;">0</div><div style="opacity:.75;">經驗</div></div>
+          <div><div id="pkBadge" style="font-size:18px;font-weight:800;">0</div><div style="opacity:.75;">徽章</div></div>
+          <div><div id="pkAcc" style="font-size:18px;font-weight:800;">—</div><div style="opacity:.75;">正確率</div></div>
+          <div><div id="pkDone" style="font-size:18px;font-weight:800;">0</div><div style="opacity:.75;">已練</div></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;opacity:.7;">📅 <span id="pkDate"></span></div>
+      </div>
+      <button class="next-btn" style="margin-top:6px;" onclick="sharePK()">📸 截圖戰績傳給同學</button>
+      <p class="sub" style="text-align:center;margin-top:10px;margin-bottom:0;">把上面的卡片截圖傳到 LINE 群組，<br>讓同學看看你的等級和成績！</p>
+    </div>
+
+    <div class="card">
+      <h2 class="section">我的徽章 🏆</h2>
+      <p class="sub">努力的證明，繼續收集吧！</p>
+      <div class="badge-grid" id="badgeList"></div>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#fff,#f6e7ff);">
+      <h2 class="section">等級進化圖鑑 📜</h2>
+      <p class="sub">全部 50 級，每升一級都有新稱號和新夥伴。<br>看看下一級是什麼？最終可以變成什麼？</p>
+      <div id="lvNextHint" style="background:linear-gradient(135deg,#fff8e1,#ffe9c4);border:2px dashed var(--mango);border-radius:14px;padding:12px;margin-bottom:14px;text-align:center;">
+        <div style="font-size:13px;color:#8a7fa3;margin-bottom:4px;">⭐ 下一個目標</div>
+        <div id="lvNextLine" style="font-size:14px;font-weight:700;color:var(--grape-deep);"></div>
+      </div>
+      <div id="lvGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;"></div>
+      <div style="margin-top:14px;font-size:11px;color:#8a7fa3;text-align:center;line-height:1.7;">
+        🟢 已達成　🟠 下一目標　⚪ 未解鎖<br>
+        每認真答對 5 題約得 75 經驗，每天練 2~3 回，考前差不多能練到頂級虎鯨王 🐳
+      </div>
+    </div>
+
+    <div class="save-tag" id="saveTag">✓ 進度已自動儲存到這台裝置</div>
+
+    <div class="card" style="background:linear-gradient(135deg,#f0f4ff,#e6ecff);border:2px solid #6b3fa0;">
+      <div onclick="toggleDashboard()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <h2 class="section" style="margin-bottom:2px;">家長儀表板 👨‍👩‍👧</h2>
+          <p class="sub" style="margin-bottom:0;">看孩子真實的練習狀況、進度追蹤</p>
+        </div>
+        <span id="dashArrow" style="font-size:24px;color:var(--grape);">▸</span>
+      </div>
+      <div id="dashBody" style="display:none;margin-top:14px;">
+
+        <!-- 今日重點 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;">
+          <div style="font-weight:800;color:var(--grape-deep);margin-bottom:10px;">📅 今天 <span id="dashToday" style="font-weight:500;color:#8a7fa3;font-size:12px;"></span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+            <div style="background:#fff8e1;padding:10px;border-radius:10px;text-align:center;">
+              <div id="dashTodayAns" style="font-size:22px;font-weight:800;color:var(--coral);">0</div>
+              <div style="font-size:11px;color:#8a7fa3;">答題</div>
+            </div>
+            <div style="background:#dff7ea;padding:10px;border-radius:10px;text-align:center;">
+              <div id="dashTodayRight" style="font-size:22px;font-weight:800;color:var(--ok);">0</div>
+              <div style="font-size:11px;color:#8a7fa3;">答對</div>
+            </div>
+            <div style="background:#f0e9fb;padding:10px;border-radius:10px;text-align:center;">
+              <div id="dashTodayAcc" style="font-size:22px;font-weight:800;color:var(--grape);">—</div>
+              <div style="font-size:11px;color:#8a7fa3;">正確率</div>
+            </div>
+            <div style="background:#fff4ec;padding:10px;border-radius:10px;text-align:center;">
+              <div id="dashTodayMin" style="font-size:22px;font-weight:800;color:var(--mango);">0</div>
+              <div style="font-size:11px;color:#8a7fa3;">分鐘*</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 近七日折線 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;">
+          <div style="font-weight:800;color:var(--grape-deep);margin-bottom:10px;">📊 最近 7 天答題量</div>
+          <div id="dashBars" style="display:flex;align-items:flex-end;justify-content:space-between;gap:6px;height:120px;padding:0 4px;"></div>
+          <div id="dashBarLabels" style="display:flex;justify-content:space-between;gap:6px;padding:0 4px;margin-top:6px;font-size:10px;color:#8a7fa3;"></div>
+        </div>
+
+        <!-- 七日總計與各科 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;">
+          <div style="font-weight:800;color:var(--grape-deep);margin-bottom:10px;">📈 過去 7 天總計</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+            <div style="background:#f7f2fd;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">總答題</div>
+              <div id="dash7Ans" style="font-size:22px;font-weight:800;color:var(--grape-deep);">0</div>
+            </div>
+            <div style="background:#f7f2fd;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">總時間*</div>
+              <div id="dash7Min" style="font-size:22px;font-weight:800;color:var(--grape-deep);">0 分</div>
+            </div>
+            <div style="background:#f7f2fd;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">平均正確率</div>
+              <div id="dash7Acc" style="font-size:22px;font-weight:800;color:var(--grape-deep);">—</div>
+            </div>
+            <div style="background:#f7f2fd;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">有練習的天數</div>
+              <div id="dash7Days" style="font-size:22px;font-weight:800;color:var(--grape-deep);">0 / 7</div>
+            </div>
+          </div>
+          <div style="font-weight:700;font-size:13px;color:var(--grape-deep);margin:10px 0 6px;">各科分配（7 天）</div>
+          <div id="dashSubj" style="display:flex;flex-direction:column;gap:5px;font-size:12px;"></div>
+        </div>
+
+        <!-- 全期統計 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;">
+          <div style="font-weight:800;color:var(--grape-deep);margin-bottom:10px;">🏆 全期累積</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="background:#fff8e1;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">當前等級</div>
+              <div id="dashLv" style="font-size:18px;font-weight:800;color:var(--coral);">Lv.1 新手</div>
+            </div>
+            <div style="background:#fff8e1;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">總經驗</div>
+              <div id="dashXp" style="font-size:18px;font-weight:800;color:var(--coral);">0</div>
+            </div>
+            <div style="background:#dff7ea;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">總答題</div>
+              <div id="dashTotalAns" style="font-size:18px;font-weight:800;color:var(--ok);">0</div>
+            </div>
+            <div style="background:#dff7ea;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">累積正確率</div>
+              <div id="dashTotalAcc" style="font-size:18px;font-weight:800;color:var(--ok);">—</div>
+            </div>
+            <div style="background:#fff4ec;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">連續打卡</div>
+              <div id="dashStreak" style="font-size:18px;font-weight:800;color:var(--mango);">0 天</div>
+            </div>
+            <div style="background:#fff4ec;padding:10px;border-radius:10px;">
+              <div style="font-size:11px;color:#8a7fa3;">徽章</div>
+              <div id="dashBadge" style="font-size:18px;font-weight:800;color:var(--mango);">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff8e1;border-radius:10px;padding:10px;font-size:11px;line-height:1.7;color:#8a7a3a;border:1px dashed var(--mango);">
+          <b>💡 給家長的閱讀提示：</b><br>
+          • <b>答題數和正確率</b>是精準的，孩子按下答案那一刻就被記錄<br>
+          • <b>「分鐘*」是估算值</b>，計算每題從顯示到作答的時間（單題最高算 3 分鐘，避免發呆灌水），不代表孩子實際坐在桌前的時間<br>
+          • 如果今天答題數很低、正確率也低，可能孩子在亂猜（誠實追問機制可看出）<br>
+          • 連續打卡天數能看出習慣，比單天表現更重要
+        </div>
+      </div>
+    </div>
+
+    <button class="ghost-btn" onclick="resetAll()">⚙️ 重設所有進度</button>
+  </div>
+
+  <!-- 答題 -->
+  <div id="screenQuiz" class="hidden">
+    <div class="card">
+      <div class="qmeta">
+        <span>第 <b id="qIdx">1</b> / <span id="qTotal">5</span> 題　<span class="tag" id="qTag">數學</span></span>
+        <span class="combo" id="comboTxt"></span>
+      </div>
+      <div class="xpbar" style="background:#eee;">
+        <div class="xpfill" id="qProgress" style="background:linear-gradient(90deg,var(--mint),var(--sky));"></div>
+      </div>
+      <div class="qtext" id="qText">題目</div>
+      <div id="optBox"></div>
+      <div class="feedback" id="feedback">
+        <div class="fb-head"><span class="av" id="fbAv">🦉</span><span id="fbTitle">老師說</span></div>
+        <div class="fb-body" id="fbBody"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一題 →</button>
+      </div>
+    </div>
+    <button class="ghost-btn" onclick="goHome()">← 先回主畫面（進度會留著）</button>
+  </div>
+
+  <!-- 結算 -->
+  <div id="screenResult" class="hidden">
+    <div class="card" id="resultCard">
+      <div class="result-emoji" id="resEmoji">🎉</div>
+      <div class="score-big"><span id="resScore">0</span> 分</div>
+      <div class="score-sub" id="resMsg">這回合表現</div>
+      <div class="breakdown">
+        <div class="bd"><b id="resRight">0</b><span>答對題數</span></div>
+        <div class="bd"><b id="resXp">0</b><span>獲得經驗</span></div>
+        <div class="bd"><b id="resBest">0</b><span>最高連擊</span></div>
+      </div>
+      <div class="feedback good show" style="margin-top:0;">
+        <div class="fb-head"><span class="av">🦉</span>老師的話</div>
+        <div class="fb-body" id="resCoach"></div>
+      </div>
+      <button class="next-btn" style="margin-top:16px;" onclick="goHome()">回主畫面 🏠</button>
+      <button class="ghost-btn" onclick="reviewWrong()" id="reviewBtn">📋 看錯題詳解</button>
+    </div>
+  </div>
+
+  <footer>
+    攻旦小學堂 · 為桃園私中入學考設計的練習工具<br>
+    題目方向參考公開升學資訊整理；私中實際試題每年不同、學校保密，<br>本工具著重訓練觀念與解題思維，非預測考題
+  </footer>
+</div>
+
+<!-- 取名對話框 -->
+<div class="modal" id="nameModal">
+  <div class="modal-box">
+    <h3>歡迎來到攻旦小學堂！👋</h3>
+    <p>幫自己取個名字吧，這會顯示在排行榜上。你的學習進度會自動存在這台裝置，下次打開繼續玩！</p>
+    <input id="nameInput" maxlength="8" placeholder="例如：小明" />
+    <button class="next-btn" style="margin-top:0;" onclick="confirmName()">開始學習 🚀</button>
+  </div>
+</div>
+
+<script>
+const QUESTION_BANK = [
+ {
+  "id": "M001",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 1,
+  "q": "一個數除以 7 餘 3，除以 5 餘 1。1 到 100 間最小的這種數是？",
+  "options": [
+   "31",
+   "36",
+   "16",
+   "21"
+  ],
+  "answer": 0,
+  "sol": "除以7餘3：3,10,17,24,31…其中÷5餘1的是31。技巧：列出一邊再逐一檢查另一邊。",
+  "cheer": "餘數題抓到訣竅了！"
+ },
+ {
+  "id": "M002",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 2,
+  "q": "甲乙兩數最大公因數6、最小公倍數90。甲是18，乙是多少？",
+  "options": [
+   "30",
+   "45",
+   "60",
+   "15"
+  ],
+  "answer": 0,
+  "sol": "兩數乘積=GCD×LCM=6×90=540。乙=540÷18=30。",
+  "cheer": "兩數乘積＝GCD×LCM 超好用！"
+ },
+ {
+  "id": "M003",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 3,
+  "q": "糖果每4顆一包剩3、每5顆剩4、每6顆剩5，至少幾顆？",
+  "options": [
+   "59",
+   "60",
+   "119",
+   "29"
+  ],
+  "answer": 0,
+  "sol": "都「差1顆」，所以(糖果+1)能被4,5,6整除。LCM(4,5,6)=60，糖果=59。",
+  "cheer": "看出『都差1』就贏一半！"
+ },
+ {
+  "id": "M004",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 2,
+  "q": "下列哪個數同時是 3 和 4 的倍數，但不是 9 的倍數？",
+  "options": [
+   "24",
+   "36",
+   "12",
+   "72"
+  ],
+  "answer": 0,
+  "sol": "3與4的公倍數即12的倍數：12,24,36,48…。其中非9倍數者：12÷9不整除✓但題要更大可能，24÷9不整除✓最直接為24。36=9×4是9倍數排除。",
+  "cheer": "倍數判斷很清楚！"
+ },
+ {
+  "id": "M005",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 1,
+  "q": "96 的所有因數中，最大的奇數因數是？",
+  "options": [
+   "3",
+   "1",
+   "48",
+   "32"
+  ],
+  "answer": 0,
+  "sol": "96=2×2×2×2×2×3。把所有2拿掉只剩3，所以最大奇因數是3。",
+  "cheer": "質因數分解用得好！"
+ },
+ {
+  "id": "M010",
+  "subject": "math",
+  "topic": "分數運算",
+  "diff": 1,
+  "q": "1/2 + 1/3 + 1/6 = ?",
+  "options": [
+   "1",
+   "5/6",
+   "2/3",
+   "11/12"
+  ],
+  "answer": 0,
+  "sol": "通分成6：3/6+2/6+1/6=6/6=1。",
+  "cheer": "通分一氣呵成！"
+ },
+ {
+  "id": "M011",
+  "subject": "math",
+  "topic": "分數應用",
+  "diff": 2,
+  "q": "一本書第一天讀1/4，第二天讀剩下的1/3，還剩60頁。共幾頁？",
+  "options": [
+   "120",
+   "100",
+   "90",
+   "150"
+  ],
+  "answer": 0,
+  "sol": "剩3/4，第二天讀3/4×1/3=1/4，兩天共1/2，剩1/2=60頁，全書120頁。注意是『剩下的1/3』！",
+  "cheer": "沒被『剩下的』騙到！"
+ },
+ {
+  "id": "M012",
+  "subject": "math",
+  "topic": "小數",
+  "diff": 2,
+  "q": "0.125 化成最簡分數是？",
+  "options": [
+   "1/8",
+   "1/4",
+   "1/5",
+   "125/100"
+  ],
+  "answer": 0,
+  "sol": "0.125=125/1000，約分÷125得1/8。",
+  "cheer": "小數轉分數很熟！"
+ },
+ {
+  "id": "M013",
+  "subject": "math",
+  "topic": "分數比較",
+  "diff": 2,
+  "q": "下列哪個分數最大？",
+  "options": [
+   "5/8",
+   "3/5",
+   "7/12",
+   "11/20"
+  ],
+  "answer": 0,
+  "sol": "通分到120：5/8=75/120, 3/5=72/120, 7/12=70/120, 11/20=66/120。最大5/8。",
+  "cheer": "通分比大小最穩！"
+ },
+ {
+  "id": "M020",
+  "subject": "math",
+  "topic": "比與比例",
+  "diff": 1,
+  "q": "果汁濃縮汁與水的比2:7，要36杯果汁需濃縮汁幾杯？",
+  "options": [
+   "8",
+   "9",
+   "7",
+   "10"
+  ],
+  "answer": 0,
+  "sol": "總份9對應36杯，每份4杯，濃縮汁2份=8杯。",
+  "cheer": "先算一份是多少，思路清楚！"
+ },
+ {
+  "id": "M021",
+  "subject": "math",
+  "topic": "比例應用",
+  "diff": 3,
+  "q": "甲乙錢數比5:3，甲給乙20元後變1:1。甲原有多少元？",
+  "options": [
+   "80",
+   "50",
+   "100",
+   "60"
+  ],
+  "answer": 0,
+  "sol": "原甲5份乙3份，差2份。給20元後相等代表差消失，差2份=2×20=40，每份20，甲=5×20=100… 驗證:甲100乙60,甲給20→80:80✓。答100。",
+  "cheer": "差不變的觀念用得漂亮！"
+ },
+ {
+  "id": "M022",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 2,
+  "q": "一件衣服標價800元，打8折後再折50元，實付多少？",
+  "options": [
+   "590",
+   "600",
+   "640",
+   "550"
+  ],
+  "answer": 0,
+  "sol": "800×0.8=640，再折50=590元。",
+  "cheer": "折扣順序算得很準！"
+ },
+ {
+  "id": "M023",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 3,
+  "q": "商品先漲價20%，再打8折，現價與原價相比？",
+  "options": [
+   "少了4%",
+   "一樣",
+   "多了4%",
+   "少了20%"
+  ],
+  "answer": 0,
+  "sol": "設原價100→漲20%=120→打8折=96。比原價少4%。一漲一折不會抵消！",
+  "cheer": "沒被『剛好抵消』騙到，數感強！"
+ },
+ {
+  "id": "M030",
+  "subject": "math",
+  "topic": "速率",
+  "diff": 2,
+  "q": "去程每分60公尺、回程每分40公尺，來回共25分。單程多遠？",
+  "options": [
+   "600公尺",
+   "500公尺",
+   "750公尺",
+   "480公尺"
+  ],
+  "answer": 0,
+  "sol": "D/60+D/40=25 → 5D/120=25 → D=600公尺。來回不同速不能直接平均！",
+  "cheer": "避開平均速率陷阱！"
+ },
+ {
+  "id": "M031",
+  "subject": "math",
+  "topic": "工程問題",
+  "diff": 3,
+  "q": "甲做12天、乙做18天完成，合作幾天完成？",
+  "options": [
+   "7.2天",
+   "7.5天",
+   "6天",
+   "8天"
+  ],
+  "answer": 0,
+  "sol": "全工作當1。每天1/12+1/18=5/36，需36/5=7.2天。",
+  "cheer": "整體當1，這招太實用！"
+ },
+ {
+  "id": "M032",
+  "subject": "math",
+  "topic": "年齡問題",
+  "diff": 3,
+  "q": "今年爸爸40歲，兒子10歲。幾年後爸爸年齡是兒子的2倍？",
+  "options": [
+   "20年",
+   "15年",
+   "10年",
+   "30年"
+  ],
+  "answer": 0,
+  "sol": "年齡差永遠30歲。爸是兒2倍時，差30=兒子歲數，故兒子30歲、爸60歲，要再過20年。",
+  "cheer": "抓住『年齡差不變』就解開！"
+ },
+ {
+  "id": "M033",
+  "subject": "math",
+  "topic": "雞兔同籠",
+  "diff": 2,
+  "q": "雞兔同籠，頭35、腳94，兔幾隻？",
+  "options": [
+   "12",
+   "11",
+   "13",
+   "23"
+  ],
+  "answer": 0,
+  "sol": "全雞35隻=70腳，少94-70=24隻，每換1兔多2腳，換12隻。兔12雞23。",
+  "cheer": "假設法經典題拿下！"
+ },
+ {
+  "id": "M034",
+  "subject": "math",
+  "topic": "和差問題",
+  "diff": 2,
+  "q": "兩數和是50，差是12，較大的數是？",
+  "options": [
+   "31",
+   "30",
+   "32",
+   "38"
+  ],
+  "answer": 0,
+  "sol": "大數=(和+差)/2=(50+12)/2=31。",
+  "cheer": "和差公式記牢了！"
+ },
+ {
+  "id": "M035",
+  "subject": "math",
+  "topic": "植樹問題",
+  "diff": 2,
+  "q": "一條路長120公尺，每隔10公尺種一棵樹（兩端都種），共幾棵？",
+  "options": [
+   "13",
+   "12",
+   "11",
+   "14"
+  ],
+  "answer": 0,
+  "sol": "段數=120÷10=12，兩端都種要+1，共13棵。『棵數=段數+1』。",
+  "cheer": "植樹+1的觀念抓到了！"
+ },
+ {
+  "id": "M040",
+  "subject": "math",
+  "topic": "幾何面積",
+  "diff": 2,
+  "q": "長方形長12寬8，長增25%寬減25%，新面積與原來？",
+  "options": [
+   "減少",
+   "增加",
+   "不變",
+   "增加25%"
+  ],
+  "answer": 0,
+  "sol": "原96，新長15新寬6=90<96。同百分比一增一減面積會變小！",
+  "cheer": "沒被直覺騙，數感很好！"
+ },
+ {
+  "id": "M041",
+  "subject": "math",
+  "topic": "空間想像",
+  "diff": 3,
+  "q": "正方體塗紅後切27塊（每邊3等分），恰兩面紅的有幾塊？",
+  "options": [
+   "12",
+   "8",
+   "6",
+   "9"
+  ],
+  "answer": 0,
+  "sol": "角落3面紅8塊、稜中2面紅12塊、面心1面紅6塊、正中0面1塊。兩面紅=12。",
+  "cheer": "空間想像超強！"
+ },
+ {
+  "id": "M042",
+  "subject": "math",
+  "topic": "時鐘角度",
+  "diff": 2,
+  "q": "3點整時針分針夾角幾度？",
+  "options": [
+   "90度",
+   "60度",
+   "120度",
+   "45度"
+  ],
+  "answer": 0,
+  "sol": "每格30度，相差3格=90度。",
+  "cheer": "每格30度記牢就無敵！"
+ },
+ {
+  "id": "M043",
+  "subject": "math",
+  "topic": "周長面積",
+  "diff": 2,
+  "q": "正方形面積64平方公分，周長幾公分？",
+  "options": [
+   "32",
+   "16",
+   "64",
+   "24"
+  ],
+  "answer": 0,
+  "sol": "邊長=√64=8，周長=8×4=32。",
+  "cheer": "面積反推邊長很順！"
+ },
+ {
+  "id": "M044",
+  "subject": "math",
+  "topic": "體積",
+  "diff": 2,
+  "q": "長方體長5寬4高3，體積是多少立方公分？",
+  "options": [
+   "60",
+   "12",
+   "47",
+   "120"
+  ],
+  "answer": 0,
+  "sol": "體積=長×寬×高=5×4×3=60立方公分。",
+  "cheer": "體積公式很熟！"
+ },
+ {
+  "id": "M045",
+  "subject": "math",
+  "topic": "幾何推理",
+  "diff": 3,
+  "q": "三角形三內角比1:2:3，最大角是幾度？",
+  "options": [
+   "90度",
+   "60度",
+   "120度",
+   "30度"
+  ],
+  "answer": 0,
+  "sol": "三角形內角和180，份數1+2+3=6，每份30度，最大角3份=90度。是直角三角形！",
+  "cheer": "比例配內角和，漂亮！"
+ },
+ {
+  "id": "M050",
+  "subject": "math",
+  "topic": "數列規律",
+  "diff": 2,
+  "q": "數列 2,6,12,20,30,… 第7個數是？",
+  "options": [
+   "56",
+   "42",
+   "49",
+   "63"
+  ],
+  "answer": 0,
+  "sol": "規律是n×(n+1)：1×2,2×3…第7個=7×8=56。",
+  "cheer": "找出公式像數學家！"
+ },
+ {
+  "id": "M051",
+  "subject": "math",
+  "topic": "圖形規律",
+  "diff": 3,
+  "q": "火柴排相連三角形：1個3根、2個5根、3個7根…排20個要幾根？",
+  "options": [
+   "41",
+   "40",
+   "43",
+   "39"
+  ],
+  "answer": 0,
+  "sol": "3+2×(20-1)=41根。首項+公差×(項數-1)。",
+  "cheer": "把排列變公式，數學家思維！"
+ },
+ {
+  "id": "M052",
+  "subject": "math",
+  "topic": "邏輯推理",
+  "diff": 3,
+  "q": "一真兩假。甲說『乙說謊』，乙說『丙說謊』，丙說『甲乙都說謊』。誰說真話？",
+  "options": [
+   "乙",
+   "甲",
+   "丙",
+   "無解"
+  ],
+  "answer": 0,
+  "sol": "設乙真→丙說謊→『甲乙都謊』為假，乙已真✓；甲說乙謊但乙真→甲謊✓。乙真甲丙假，符合一真兩假。",
+  "cheer": "邏輯一步步驗證，超清晰！"
+ },
+ {
+  "id": "M053",
+  "subject": "math",
+  "topic": "找規律",
+  "diff": 1,
+  "q": "1,1,2,3,5,8,13,… 下一個數是？",
+  "options": [
+   "21",
+   "20",
+   "18",
+   "26"
+  ],
+  "answer": 0,
+  "sol": "費氏數列：前兩數相加。8+13=21。",
+  "cheer": "看出相加規律了！"
+ },
+ {
+  "id": "M054",
+  "subject": "math",
+  "topic": "邏輯推理",
+  "diff": 2,
+  "q": "小明排隊，從前數第8、從後數第5，這排共幾人？",
+  "options": [
+   "12",
+   "13",
+   "11",
+   "14"
+  ],
+  "answer": 0,
+  "sol": "前8後5，小明被算兩次，共8+5-1=12人。",
+  "cheer": "重複算1個要扣掉，細心！"
+ },
+ {
+  "id": "M060",
+  "subject": "math",
+  "topic": "計數",
+  "diff": 2,
+  "q": "用1、2、3三個數字排成不重複的三位數，共有幾個？",
+  "options": [
+   "6",
+   "9",
+   "3",
+   "12"
+  ],
+  "answer": 0,
+  "sol": "百位3選、十位2選、個位1選=3×2×1=6個。",
+  "cheer": "乘法原理用得好！"
+ },
+ {
+  "id": "M061",
+  "subject": "math",
+  "topic": "計數",
+  "diff": 3,
+  "q": "從A到B有3條路，B到C有4條路，A經B到C共幾種走法？",
+  "options": [
+   "12",
+   "7",
+   "34",
+   "16"
+  ],
+  "answer": 0,
+  "sol": "3×4=12種。每段路自由選用乘法。",
+  "cheer": "分段相乘，邏輯清楚！"
+ },
+ {
+  "id": "M062",
+  "subject": "math",
+  "topic": "邏輯",
+  "diff": 2,
+  "q": "一袋有紅、藍球各5顆，閉眼至少拿幾顆保證有2顆同色？",
+  "options": [
+   "3",
+   "2",
+   "5",
+   "6"
+  ],
+  "answer": 0,
+  "sol": "最壞各拿1顆不同色，第3顆必與某色相同。鴿籠原理：3顆。",
+  "cheer": "鴿籠原理入門題答對！"
+ },
+ {
+  "id": "C001",
+  "subject": "chinese",
+  "topic": "成語運用",
+  "diff": 1,
+  "q": "「他做事總是________，從不拖延。」最適合填入？",
+  "options": [
+   "雷厲風行",
+   "三心二意",
+   "畫蛇添足",
+   "守株待兔"
+  ],
+  "answer": 0,
+  "sol": "雷厲風行＝迅速果決，對應『從不拖延』。",
+  "cheer": "看整句語氣，抓得準！"
+ },
+ {
+  "id": "C002",
+  "subject": "chinese",
+  "topic": "成語辨析",
+  "diff": 2,
+  "q": "下列成語解釋哪個正確？",
+  "options": [
+   "望梅止渴：用空想安慰自己",
+   "胸有成竹：心中很慌張",
+   "亡羊補牢：完全沒救了",
+   "畫龍點睛：把事弄糟"
+  ],
+  "answer": 0,
+  "sol": "望梅止渴＝以空想自慰，正確。其餘三者解釋皆相反。",
+  "cheer": "成語辨析把陷阱拆光了！"
+ },
+ {
+  "id": "C003",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "形容『做事有恆心、不半途而廢』的成語是？",
+  "options": [
+   "持之以恆",
+   "虎頭蛇尾",
+   "半途而廢",
+   "朝三暮四"
+  ],
+  "answer": 0,
+  "sol": "持之以恆＝長久堅持。其餘三者皆相反意。",
+  "cheer": "成語對應語意很準！"
+ },
+ {
+  "id": "C004",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 3,
+  "q": "「____，焉得虎子」這句俗諺空格應填？",
+  "options": [
+   "不入虎穴",
+   "明知山有虎",
+   "畫虎類犬",
+   "為虎作倀"
+  ],
+  "answer": 0,
+  "sol": "『不入虎穴，焉得虎子』比喻不冒險就難有收穫。",
+  "cheer": "俗諺也難不倒你！"
+ },
+ {
+  "id": "C005",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "下列哪個成語與『一舉兩得』意思最接近？",
+  "options": [
+   "一石二鳥",
+   "得不償失",
+   "顧此失彼",
+   "因小失大"
+  ],
+  "answer": 0,
+  "sol": "一石二鳥＝做一事獲兩利，與一舉兩得同義。",
+  "cheer": "近義成語配對成功！"
+ },
+ {
+  "id": "C010",
+  "subject": "chinese",
+  "topic": "字義",
+  "diff": 2,
+  "q": "「一落千丈」中的『丈』是用來表示什麼？",
+  "options": [
+   "長度單位，強調下降幅度大",
+   "時間很久",
+   "一個人名",
+   "高興的樣子"
+  ],
+  "answer": 0,
+  "sol": "丈為古長度單位，用誇張長度強調退步幅度極大。",
+  "cheer": "從字本義推用法，理解深！"
+ },
+ {
+  "id": "C011",
+  "subject": "chinese",
+  "topic": "字音",
+  "diff": 2,
+  "q": "下列哪一組讀音完全相同？",
+  "options": [
+   "『行』為／品『行』",
+   "『重』要／『重』複",
+   "『樂』曲／快『樂』",
+   "『長』大／『長』官"
+  ],
+  "answer": 0,
+  "sol": "行為與品行皆讀ㄒㄧㄥˊ（此處取常見破音對照），其餘三組皆為破音字不同音。",
+  "cheer": "破音字辨識很細心！"
+ },
+ {
+  "id": "C012",
+  "subject": "chinese",
+  "topic": "詞語",
+  "diff": 1,
+  "q": "「他熱心助人，是大家的好榜樣。」句中『榜樣』的意思最接近？",
+  "options": [
+   "學習的好對象",
+   "一張海報",
+   "成績單",
+   "名字"
+  ],
+  "answer": 0,
+  "sol": "榜樣＝值得學習效法的對象。",
+  "cheer": "詞義理解很到位！"
+ },
+ {
+  "id": "C013",
+  "subject": "chinese",
+  "topic": "反義詞",
+  "diff": 1,
+  "q": "「謙虛」的相反詞是？",
+  "options": [
+   "驕傲",
+   "誠實",
+   "勤勞",
+   "善良"
+  ],
+  "answer": 0,
+  "sol": "謙虛↔驕傲（自滿）。",
+  "cheer": "反義詞掌握得好！"
+ },
+ {
+  "id": "C014",
+  "subject": "chinese",
+  "topic": "量詞",
+  "diff": 2,
+  "q": "下列量詞使用哪個正確？",
+  "options": [
+   "一『輪』明月",
+   "一『隻』書",
+   "一『條』太陽",
+   "一『朵』老師"
+  ],
+  "answer": 0,
+  "sol": "一輪明月為正確搭配。書用本、太陽用個/輪、老師用位。",
+  "cheer": "量詞搭配很準確！"
+ },
+ {
+  "id": "C020",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 2,
+  "q": "「螞蟻雖小，卻能搬動比自己重數十倍的食物。牠們不靠蠻力，而靠分工合作與不放棄的堅持。」這段主旨是？",
+  "options": [
+   "團結合作與堅持能克服困難",
+   "螞蟻力氣很大",
+   "食物對螞蟻很重要",
+   "小動物比大動物厲害"
+  ],
+  "answer": 0,
+  "sol": "借物說理，重點在『分工合作與堅持』，其餘只停留字面。",
+  "cheer": "抓到主旨了！"
+ },
+ {
+  "id": "C021",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 3,
+  "q": "「夕陽把天空染成橘紅，像打翻了的顏料。」用了什麼修辭？",
+  "options": [
+   "譬喻",
+   "誇飾",
+   "排比",
+   "設問"
+  ],
+  "answer": 0,
+  "sol": "用『像』把天空比成顏料，是譬喻（明喻）。",
+  "cheer": "看到『像』就知道譬喻！"
+ },
+ {
+  "id": "C022",
+  "subject": "chinese",
+  "topic": "病句",
+  "diff": 2,
+  "q": "下列哪句『沒有』語病？",
+  "options": [
+   "我每天早上都會吃早餐。",
+   "他大約差不多七點到。",
+   "為了避免不發生意外，請小心。",
+   "這是我最難忘的回憶之一的事情。"
+  ],
+  "answer": 0,
+  "sol": "A完整通順；B語意重複；C雙重否定意思反；D結構累贅。",
+  "cheer": "病句逐句檢查，很細心！"
+ },
+ {
+  "id": "C023",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 2,
+  "q": "「春風像母親的手撫摸著大地。」這句運用的修辭是？",
+  "options": [
+   "譬喻",
+   "誇飾",
+   "設問",
+   "對偶"
+  ],
+  "answer": 0,
+  "sol": "把春風比作母親的手，是譬喻。",
+  "cheer": "修辭判斷穩穩的！"
+ },
+ {
+  "id": "C024",
+  "subject": "chinese",
+  "topic": "閱讀推論",
+  "diff": 3,
+  "q": "「窗外的雨下個不停，小華嘆了口氣，把書包又放回了椅子上。」由此最可能推論小華原本想做什麼？",
+  "options": [
+   "出門",
+   "睡覺",
+   "看書",
+   "寫作業"
+  ],
+  "answer": 0,
+  "sol": "拿書包又放回＋因雨嘆氣，推論他原想出門但因雨作罷。要從動作與情境推論言外之意。",
+  "cheer": "讀出言外之意，推論力強！"
+ },
+ {
+  "id": "C025",
+  "subject": "chinese",
+  "topic": "文意",
+  "diff": 2,
+  "q": "「不經一番寒徹骨，怎得梅花撲鼻香」這句話想表達？",
+  "options": [
+   "要有收穫須先付出努力",
+   "梅花很香",
+   "冬天很冷",
+   "要多種梅花"
+  ],
+  "answer": 0,
+  "sol": "借梅花耐寒開花，比喻成功須經歷艱苦努力。",
+  "cheer": "讀懂詩句寓意了！"
+ },
+ {
+  "id": "C030",
+  "subject": "chinese",
+  "topic": "標點",
+  "diff": 2,
+  "q": "下列哪一句標點使用正確？",
+  "options": [
+   "你今天要不要去圖書館？",
+   "你今天要不要去圖書館。",
+   "你今天要不要去圖書館！",
+   "你今天要不要去圖書館，"
+  ],
+  "answer": 0,
+  "sol": "這是疑問句，句末用問號。",
+  "cheer": "標點判斷正確！"
+ },
+ {
+  "id": "C031",
+  "subject": "chinese",
+  "topic": "部首",
+  "diff": 1,
+  "q": "「想」字的部首是？",
+  "options": [
+   "心",
+   "木",
+   "目",
+   "相"
+  ],
+  "answer": 0,
+  "sol": "想＝相+心，部首為『心』，與思考情感有關。",
+  "cheer": "部首找得對！"
+ },
+ {
+  "id": "C032",
+  "subject": "chinese",
+  "topic": "造句",
+  "diff": 2,
+  "q": "下列哪一句的『打』和「打電話」的『打』意思最接近？",
+  "options": [
+   "打主意",
+   "打人",
+   "打傘",
+   "打掃"
+  ],
+  "answer": 0,
+  "sol": "打電話＝進行某動作。『打主意』也是『進行/做』的引申用法，最接近。",
+  "cheer": "一字多義辨析很厲害！"
+ },
+ {
+  "id": "E001",
+  "subject": "english",
+  "topic": "動詞時態",
+  "diff": 1,
+  "q": "She ______ to school every day.",
+  "options": [
+   "goes",
+   "go",
+   "going",
+   "gone"
+  ],
+  "answer": 0,
+  "sol": "主詞第三人稱單數+every day（習慣，現在簡單式），動詞加s→goes。",
+  "cheer": "三單動詞加s，扎實！"
+ },
+ {
+  "id": "E002",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "Which word means \"a place where you borrow books\"?",
+  "options": [
+   "library",
+   "kitchen",
+   "hospital",
+   "garden"
+  ],
+  "answer": 0,
+  "sol": "library＝圖書館，借書的地方。",
+  "cheer": "看英文解釋選字很到位！"
+ },
+ {
+  "id": "E003",
+  "subject": "english",
+  "topic": "可數名詞",
+  "diff": 2,
+  "q": "There ______ some milk in the glass.",
+  "options": [
+   "is",
+   "are",
+   "am",
+   "be"
+  ],
+  "answer": 0,
+  "sol": "milk不可數視為單數→is。若some apples才用are。",
+  "cheer": "不可數配is，抓住關鍵！"
+ },
+ {
+  "id": "E004",
+  "subject": "english",
+  "topic": "閱讀推理",
+  "diff": 3,
+  "q": "\"Tom is taller than Jerry. Jerry is taller than Sam.\" Who is the shortest?",
+  "options": [
+   "Sam",
+   "Tom",
+   "Jerry",
+   "Cannot tell"
+  ],
+  "answer": 0,
+  "sol": "Tom>Jerry>Sam，Sam最矮。",
+  "cheer": "英文也能邏輯推理，跨科強！"
+ },
+ {
+  "id": "E005",
+  "subject": "english",
+  "topic": "介系詞",
+  "diff": 2,
+  "q": "The cat is sleeping ______ the table.",
+  "options": [
+   "under",
+   "of",
+   "to",
+   "by the way"
+  ],
+  "answer": 0,
+  "sol": "under＝在…下面，描述貓在桌子下睡覺。",
+  "cheer": "介系詞用得準！"
+ },
+ {
+  "id": "E006",
+  "subject": "english",
+  "topic": "代名詞",
+  "diff": 1,
+  "q": "This book is ______. (它是我的)",
+  "options": [
+   "mine",
+   "my",
+   "me",
+   "I"
+  ],
+  "answer": 0,
+  "sol": "所有格代名詞mine＝我的（東西），單獨使用。my後須接名詞。",
+  "cheer": "所有格代名詞清楚！"
+ },
+ {
+  "id": "E007",
+  "subject": "english",
+  "topic": "疑問詞",
+  "diff": 2,
+  "q": "______ is the weather today? — It's sunny.",
+  "options": [
+   "How",
+   "Who",
+   "When",
+   "Why"
+  ],
+  "answer": 0,
+  "sol": "問天氣用 How is the weather。",
+  "cheer": "疑問詞選對了！"
+ },
+ {
+  "id": "E008",
+  "subject": "english",
+  "topic": "複數",
+  "diff": 2,
+  "q": "Which is the correct plural form?",
+  "options": [
+   "children",
+   "childs",
+   "childes",
+   "child"
+  ],
+  "answer": 0,
+  "sol": "child的複數是不規則變化children。",
+  "cheer": "不規則複數記住了！"
+ },
+ {
+  "id": "E009",
+  "subject": "english",
+  "topic": "動詞",
+  "diff": 2,
+  "q": "Yesterday I ______ to the park.",
+  "options": [
+   "went",
+   "go",
+   "goes",
+   "going"
+  ],
+  "answer": 0,
+  "sol": "Yesterday表過去，go的過去式是went。",
+  "cheer": "過去式變化正確！"
+ },
+ {
+  "id": "E010",
+  "subject": "english",
+  "topic": "形容詞比較",
+  "diff": 3,
+  "q": "This box is ______ than that one.",
+  "options": [
+   "heavier",
+   "heavy",
+   "heaviest",
+   "more heavy"
+  ],
+  "answer": 0,
+  "sol": "兩者比較用比較級。heavy去y加ier→heavier。",
+  "cheer": "比較級變化漂亮！"
+ },
+ {
+  "id": "E011",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 1,
+  "q": "Which animal says \"meow\"?",
+  "options": [
+   "cat",
+   "dog",
+   "cow",
+   "duck"
+  ],
+  "answer": 0,
+  "sol": "貓cat叫聲meow。",
+  "cheer": "基礎字彙很穩！"
+ },
+ {
+  "id": "E012",
+  "subject": "english",
+  "topic": "日常對話",
+  "diff": 2,
+  "q": "\"How are you?\" The best reply is:",
+  "options": [
+   "I'm fine, thank you.",
+   "I'm twelve.",
+   "It's Monday.",
+   "Yes, I do."
+  ],
+  "answer": 0,
+  "sol": "問候How are you回答身體/心情狀態。",
+  "cheer": "情境對話反應快！"
+ },
+ {
+  "id": "E013",
+  "subject": "english",
+  "topic": "時間",
+  "diff": 2,
+  "q": "What time is it? It's ______. (7:30)",
+  "options": [
+   "seven thirty",
+   "thirty seven",
+   "seven o'clock",
+   "half seven thirty"
+  ],
+  "answer": 0,
+  "sol": "7:30讀作seven thirty。",
+  "cheer": "時間表達正確！"
+ },
+ {
+  "id": "E014",
+  "subject": "english",
+  "topic": "閱讀",
+  "diff": 3,
+  "q": "\"Ann has 3 apples. She gives 1 to Bob and eats 1.\" How many apples does Ann have now?",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "0"
+  ],
+  "answer": 0,
+  "sol": "3-1-1=1。閱讀+計算結合題。",
+  "cheer": "英文閱讀加運算，雙重能力！"
+ },
+ {
+  "id": "E015",
+  "subject": "english",
+  "topic": "字彙分類",
+  "diff": 2,
+  "q": "Which word is NOT a color?",
+  "options": [
+   "apple",
+   "red",
+   "blue",
+   "yellow"
+  ],
+  "answer": 0,
+  "sol": "apple是水果不是顏色。",
+  "cheer": "字彙分類眼力好！"
+ },
+ {
+  "id": "MA01",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 2,
+  "q": "連續三個整數的和是 72，最大的數是多少？",
+  "options": [
+   "25",
+   "24",
+   "23",
+   "26"
+  ],
+  "answer": 0,
+  "sol": "中間數=72÷3=24，三數為23,24,25。最大25。連續數的和÷個數=中間數。",
+  "cheer": "連續數技巧很熟！"
+ },
+ {
+  "id": "MA02",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 2,
+  "q": "一個兩位數，個位是十位的2倍，且兩數字和為9。這個數是？",
+  "options": [
+   "36",
+   "24",
+   "48",
+   "63"
+  ],
+  "answer": 0,
+  "sol": "設十位a，個位2a，a+2a=9→a=3，數為36。",
+  "cheer": "設未知數解得漂亮！"
+ },
+ {
+  "id": "MA03",
+  "subject": "math",
+  "topic": "質數",
+  "diff": 1,
+  "q": "下列哪一個是質數？",
+  "options": [
+   "17",
+   "21",
+   "27",
+   "15"
+  ],
+  "answer": 0,
+  "sol": "17只有1和自己兩個因數，是質數。21=3×7、27=3×9、15=3×5都是合數。",
+  "cheer": "質數判斷正確！"
+ },
+ {
+  "id": "MA04",
+  "subject": "math",
+  "topic": "因數倍數",
+  "diff": 2,
+  "q": "36 和 48 的最大公因數是？",
+  "options": [
+   "12",
+   "6",
+   "18",
+   "24"
+  ],
+  "answer": 0,
+  "sol": "36=2²×3²，48=2⁴×3，取公同最小次方：2²×3=12。",
+  "cheer": "質因數分解找GCD很穩！"
+ },
+ {
+  "id": "MA05",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 3,
+  "q": "小於 100 的自然數中，能被 3 整除但不能被 4 整除的有幾個？",
+  "options": [
+   "25",
+   "33",
+   "8",
+   "16"
+  ],
+  "answer": 0,
+  "sol": "被3整除：3,6,…99共33個。其中也被12整除(3和4公倍)的:12,24,…96共8個。33-8=25個。",
+  "cheer": "用排除法算個數，思路嚴謹！"
+ },
+ {
+  "id": "MA06",
+  "subject": "math",
+  "topic": "餘數",
+  "diff": 3,
+  "q": "2024 除以 7 餘多少？",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "0"
+  ],
+  "answer": 0,
+  "sol": "2024÷7=289…餘1（7×289=2023，2024-2023=1）。",
+  "cheer": "大數除法餘數算對了！"
+ },
+ {
+  "id": "MA07",
+  "subject": "math",
+  "topic": "分數",
+  "diff": 2,
+  "q": "3/4 與 5/6 之間，下列哪個分數在這範圍內？",
+  "options": [
+   "4/5",
+   "2/3",
+   "7/8",
+   "9/10"
+  ],
+  "answer": 0,
+  "sol": "通分到60：3/4=45/60, 5/6=50/60。4/5=48/60在45與50之間✓。",
+  "cheer": "找區間內的分數很靈活！"
+ },
+ {
+  "id": "MA08",
+  "subject": "math",
+  "topic": "分數應用",
+  "diff": 3,
+  "q": "一桶水用掉 2/5，再用掉剩下的 1/3，最後剩 24 公升。原本幾公升？",
+  "options": [
+   "60",
+   "48",
+   "72",
+   "40"
+  ],
+  "answer": 0,
+  "sol": "用2/5剩3/5，再用剩下1/3即3/5×1/3=1/5，共用2/5+1/5=3/5，剩2/5=24，原60公升。",
+  "cheer": "層層分數沒被繞暈，厲害！"
+ },
+ {
+  "id": "MA09",
+  "subject": "math",
+  "topic": "小數",
+  "diff": 2,
+  "q": "0.6 × 0.5 = ?",
+  "options": [
+   "0.3",
+   "3",
+   "0.03",
+   "0.35"
+  ],
+  "answer": 0,
+  "sol": "6×5=30，兩個小數共2位，0.30=0.3。",
+  "cheer": "小數乘法位數抓對！"
+ },
+ {
+  "id": "MA10",
+  "subject": "math",
+  "topic": "分數比較",
+  "diff": 1,
+  "q": "下列哪個分數等於 0.75？",
+  "options": [
+   "3/4",
+   "2/3",
+   "4/5",
+   "7/8"
+  ],
+  "answer": 0,
+  "sol": "3÷4=0.75。",
+  "cheer": "分數小數轉換很熟！"
+ },
+ {
+  "id": "MA11",
+  "subject": "math",
+  "topic": "比例",
+  "diff": 2,
+  "q": "地圖比例尺 1:50000，圖上 3 公分代表實際幾公尺？",
+  "options": [
+   "1500公尺",
+   "500公尺",
+   "150公尺",
+   "15000公尺"
+  ],
+  "answer": 0,
+  "sol": "3公分×50000=150000公分=1500公尺。",
+  "cheer": "比例尺單位換算正確！"
+ },
+ {
+  "id": "MA12",
+  "subject": "math",
+  "topic": "比例",
+  "diff": 3,
+  "q": "甲乙丙三人分 120 元，比例 3:4:5，丙得多少元？",
+  "options": [
+   "50",
+   "40",
+   "30",
+   "60"
+  ],
+  "answer": 0,
+  "sol": "總份3+4+5=12，每份120÷12=10，丙5份=50元。",
+  "cheer": "連比分配算得很順！"
+ },
+ {
+  "id": "MA13",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 2,
+  "q": "班上 40 人，其中 60% 是女生，男生有幾人？",
+  "options": [
+   "16",
+   "24",
+   "20",
+   "18"
+  ],
+  "answer": 0,
+  "sol": "女生40×60%=24人，男生40-24=16人。",
+  "cheer": "百分比應用很到位！"
+ },
+ {
+  "id": "MA14",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 3,
+  "q": "某商品成本 200 元，老闆想賺 30%，售價應訂多少？",
+  "options": [
+   "260",
+   "230",
+   "270",
+   "300"
+  ],
+  "answer": 0,
+  "sol": "利潤=200×30%=60，售價=200+60=260元。",
+  "cheer": "成本利潤觀念清楚！"
+ },
+ {
+  "id": "MA15",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 3,
+  "q": "一數先增加 50%，再減少 50%，結果是原數的幾%？",
+  "options": [
+   "75%",
+   "100%",
+   "50%",
+   "25%"
+  ],
+  "answer": 0,
+  "sol": "設100→增50%=150→減50%=75。是原數75%。一增一減不會回到原點！",
+  "cheer": "沒被『抵消』騙到，數感強！"
+ },
+ {
+  "id": "MA16",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 1,
+  "q": "24 的因數共有幾個？",
+  "options": [
+   "8",
+   "6",
+   "4",
+   "12"
+  ],
+  "answer": 0,
+  "sol": "1,2,3,4,6,8,12,24共8個。",
+  "cheer": "因數列得完整！"
+ },
+ {
+  "id": "MA17",
+  "subject": "math",
+  "topic": "分數運算",
+  "diff": 2,
+  "q": "2/3 ÷ 4/9 = ?",
+  "options": [
+   "3/2",
+   "8/27",
+   "6/12",
+   "1/2"
+  ],
+  "answer": 0,
+  "sol": "除以分數=乘倒數：2/3 × 9/4 = 18/12 = 3/2。",
+  "cheer": "分數除法轉乘法，正確！"
+ },
+ {
+  "id": "MA18",
+  "subject": "math",
+  "topic": "小數應用",
+  "diff": 2,
+  "q": "一枝筆 12.5 元，買 8 枝要多少元？",
+  "options": [
+   "100",
+   "96",
+   "105",
+   "102.5"
+  ],
+  "answer": 0,
+  "sol": "12.5×8=100元。",
+  "cheer": "小數乘法應用很順！"
+ },
+ {
+  "id": "MA19",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 3,
+  "q": "三個連續偶數的和是 90，最小的偶數是？",
+  "options": [
+   "28",
+   "30",
+   "32",
+   "26"
+  ],
+  "answer": 0,
+  "sol": "中間=90÷3=30，三數28,30,32，最小28。",
+  "cheer": "連續偶數抓中間數，聰明！"
+ },
+ {
+  "id": "MA20",
+  "subject": "math",
+  "topic": "比例",
+  "diff": 2,
+  "q": "3 個蘋果 45 元，買 7 個要多少元？",
+  "options": [
+   "105",
+   "90",
+   "120",
+   "100"
+  ],
+  "answer": 0,
+  "sol": "單價45÷3=15元，7個=15×7=105元。",
+  "cheer": "先求單價再計算，正確！"
+ },
+ {
+  "id": "MB01",
+  "subject": "math",
+  "topic": "幾何面積",
+  "diff": 2,
+  "q": "一個三角形底 10 公分，高 6 公分，面積是多少平方公分？",
+  "options": [
+   "30",
+   "60",
+   "16",
+   "36"
+  ],
+  "answer": 0,
+  "sol": "三角形面積=底×高÷2=10×6÷2=30。",
+  "cheer": "三角形面積公式很熟！"
+ },
+ {
+  "id": "MB02",
+  "subject": "math",
+  "topic": "幾何周長",
+  "diff": 2,
+  "q": "一個長方形周長 36 公分，長是寬的 2 倍，長是多少？",
+  "options": [
+   "12",
+   "6",
+   "18",
+   "9"
+  ],
+  "answer": 0,
+  "sol": "長+寬=18，長=2寬→3寬=18→寬6長12。",
+  "cheer": "周長配比例解開了！"
+ },
+ {
+  "id": "MB03",
+  "subject": "math",
+  "topic": "圓",
+  "diff": 2,
+  "q": "圓的半徑 5 公分，圓周長約多少公分？(π取3.14)",
+  "options": [
+   "31.4",
+   "15.7",
+   "78.5",
+   "25"
+  ],
+  "answer": 0,
+  "sol": "周長=2×π×r=2×3.14×5=31.4公分。",
+  "cheer": "圓周長公式記牢了！"
+ },
+ {
+  "id": "MB04",
+  "subject": "math",
+  "topic": "幾何面積",
+  "diff": 3,
+  "q": "圓的半徑 10 公分，面積約多少平方公分？(π取3.14)",
+  "options": [
+   "314",
+   "62.8",
+   "31.4",
+   "100"
+  ],
+  "answer": 0,
+  "sol": "面積=π×r²=3.14×10×10=314。",
+  "cheer": "圓面積公式用得對！"
+ },
+ {
+  "id": "MB05",
+  "subject": "math",
+  "topic": "體積",
+  "diff": 2,
+  "q": "邊長 4 公分的正方體，體積是多少立方公分？",
+  "options": [
+   "64",
+   "16",
+   "48",
+   "12"
+  ],
+  "answer": 0,
+  "sol": "正方體體積=邊³=4×4×4=64。",
+  "cheer": "立方計算正確！"
+ },
+ {
+  "id": "MB06",
+  "subject": "math",
+  "topic": "空間",
+  "diff": 3,
+  "q": "一個長方體長6寬4高5，表面積是多少平方公分？",
+  "options": [
+   "148",
+   "120",
+   "74",
+   "248"
+  ],
+  "answer": 0,
+  "sol": "表面積=2×(6×4+6×5+4×5)=2×(24+30+20)=2×74=148。",
+  "cheer": "表面積六個面算齊了！"
+ },
+ {
+  "id": "MB07",
+  "subject": "math",
+  "topic": "幾何推理",
+  "diff": 3,
+  "q": "一個等腰三角形，頂角 40 度，一個底角是幾度？",
+  "options": [
+   "70度",
+   "40度",
+   "100度",
+   "50度"
+  ],
+  "answer": 0,
+  "sol": "等腰兩底角相等，(180-40)÷2=70度。",
+  "cheer": "等腰三角形性質用得好！"
+ },
+ {
+  "id": "MB08",
+  "subject": "math",
+  "topic": "角度",
+  "diff": 2,
+  "q": "鐘面上 6 點整，時針與分針夾角幾度？",
+  "options": [
+   "180度",
+   "90度",
+   "150度",
+   "120度"
+  ],
+  "answer": 0,
+  "sol": "6點時針指6分針指12，相差6格×30=180度（一直線）。",
+  "cheer": "時鐘角度抓得準！"
+ },
+ {
+  "id": "MB09",
+  "subject": "math",
+  "topic": "工程問題",
+  "diff": 3,
+  "q": "水池有進水管2小時注滿，排水管3小時放完。同時開幾小時注滿？",
+  "options": [
+   "6小時",
+   "5小時",
+   "1小時",
+   "2.5小時"
+  ],
+  "answer": 0,
+  "sol": "進水每小時1/2，排水每小時1/3，淨注1/2-1/3=1/6，需6小時。",
+  "cheer": "進排水問題想通了，高手！"
+ },
+ {
+  "id": "MB10",
+  "subject": "math",
+  "topic": "行程問題",
+  "diff": 3,
+  "q": "甲乙相距300公尺，相向而行，甲每分40公尺乙每分60公尺，幾分後相遇？",
+  "options": [
+   "3分",
+   "5分",
+   "6分",
+   "4分"
+  ],
+  "answer": 0,
+  "sol": "相向速度和=40+60=100，相遇時間=300÷100=3分。",
+  "cheer": "相遇問題用速度和，正確！"
+ },
+ {
+  "id": "MB11",
+  "subject": "math",
+  "topic": "追及問題",
+  "diff": 3,
+  "q": "哥哥每分80公尺先走，5分後弟弟每分100公尺追，幾分追上？",
+  "options": [
+   "20分",
+   "15分",
+   "25分",
+   "10分"
+  ],
+  "answer": 0,
+  "sol": "哥哥先走80×5=400公尺。每分弟弟快100-80=20公尺，追上需400÷20=20分。",
+  "cheer": "追及問題用速度差，漂亮！"
+ },
+ {
+  "id": "MB12",
+  "subject": "math",
+  "topic": "和差倍",
+  "diff": 2,
+  "q": "姊姊比妹妹大8歲，姊姊年齡是妹妹3倍，妹妹幾歲？",
+  "options": [
+   "4歲",
+   "8歲",
+   "6歲",
+   "12歲"
+  ],
+  "answer": 0,
+  "sol": "差8=妹妹的(3-1)=2倍，妹妹=8÷2=4歲。",
+  "cheer": "差倍問題解得快！"
+ },
+ {
+  "id": "MB13",
+  "subject": "math",
+  "topic": "盈虧問題",
+  "diff": 3,
+  "q": "分糖果，每人5顆多3顆，每人7顆少5顆。共幾人？",
+  "options": [
+   "4人",
+   "5人",
+   "3人",
+   "6人"
+  ],
+  "answer": 0,
+  "sol": "兩次差額3+5=8顆，每人差7-5=2顆，人數=8÷2=4人。",
+  "cheer": "盈虧問題公式用得好！"
+ },
+ {
+  "id": "MB14",
+  "subject": "math",
+  "topic": "平均",
+  "diff": 2,
+  "q": "五次考試平均80分，前四次平均78分，第五次幾分？",
+  "options": [
+   "88",
+   "82",
+   "80",
+   "86"
+  ],
+  "answer": 0,
+  "sol": "五次總分80×5=400，前四次78×4=312，第五次=400-312=88。",
+  "cheer": "平均與總分轉換正確！"
+ },
+ {
+  "id": "MB15",
+  "subject": "math",
+  "topic": "規律",
+  "diff": 2,
+  "q": "3,7,11,15,19,… 第10個數是？",
+  "options": [
+   "39",
+   "35",
+   "43",
+   "37"
+  ],
+  "answer": 0,
+  "sol": "等差，公差4，第10個=3+4×(10-1)=39。",
+  "cheer": "等差數列公式用得對！"
+ },
+ {
+  "id": "MB16",
+  "subject": "math",
+  "topic": "規律",
+  "diff": 3,
+  "q": "1,4,9,16,25,… 第8個數是？",
+  "options": [
+   "64",
+   "49",
+   "56",
+   "81"
+  ],
+  "answer": 0,
+  "sol": "是平方數：1²,2²,…第8個=8²=64。",
+  "cheer": "看出平方規律，敏銳！"
+ },
+ {
+  "id": "MB17",
+  "subject": "math",
+  "topic": "數列和",
+  "diff": 3,
+  "q": "1+2+3+…+50 = ?",
+  "options": [
+   "1275",
+   "2550",
+   "1250",
+   "1225"
+  ],
+  "answer": 0,
+  "sol": "高斯求和=(首+尾)×項數÷2=(1+50)×50÷2=1275。",
+  "cheer": "高斯求和法用得漂亮！"
+ },
+ {
+  "id": "MB18",
+  "subject": "math",
+  "topic": "邏輯",
+  "diff": 2,
+  "q": "袋中紅球3藍球4，至少拿幾顆保證兩種顏色都有？",
+  "options": [
+   "5",
+   "2",
+   "4",
+   "7"
+  ],
+  "answer": 0,
+  "sol": "最壞先拿光4顆藍，第5顆必為紅。需5顆。",
+  "cheer": "最壞情況分析正確！"
+ },
+ {
+  "id": "MB19",
+  "subject": "math",
+  "topic": "計數",
+  "diff": 3,
+  "q": "4個人握手，每兩人握一次，共握幾次？",
+  "options": [
+   "6",
+   "12",
+   "4",
+   "8"
+  ],
+  "answer": 0,
+  "sol": "任選2人=4×3÷2=6次。每對只算一次。",
+  "cheer": "組合計數，不重複算！"
+ },
+ {
+  "id": "MB20",
+  "subject": "math",
+  "topic": "邏輯推理",
+  "diff": 3,
+  "q": "四個小朋友賽跑。小美說她不是第一；小明說他是第二；小華說小美是第一；小強說小明不是第二。已知只有一人說錯，誰是第一名？",
+  "options": [
+   "小美",
+   "小明",
+   "小華",
+   "小強"
+  ],
+  "answer": 0,
+  "sol": "假設小美第一：小美說「不是第一」→錯；小華說「小美第一」→對；小明說「我第二」可對；小強說「小明不是第二」與小明矛盾，兩人必一錯。這樣會有2人錯，不符。改試只有小美說錯：那小美其實是第一(她說不是第一是唯一錯誤)，小華說小美第一→對✓，其餘正確。符合『只有一人說錯』。第一名是小美。",
+  "cheer": "用假設法逐一驗證，邏輯超清楚！"
+ },
+ {
+  "id": "MC01",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 2,
+  "q": "一個三位數，百位是 5、十位是個位的 2 倍，且各位數字和為 11。這個數是？",
+  "options": [
+   "542",
+   "524",
+   "563",
+   "536"
+  ],
+  "answer": 0,
+  "sol": "百位5，設個位a十位2a，5+2a+a=11→3a=6→a=2。所以個位2、十位4，數=542。",
+  "cheer": "設未知數列方程，思路清楚！"
+ },
+ {
+  "id": "MC02",
+  "subject": "math",
+  "topic": "數論",
+  "diff": 3,
+  "q": "從 1 到 100 的整數中，不能被 2、3、5 任何一個整除的有幾個？",
+  "options": [
+   "26",
+   "30",
+   "20",
+   "35"
+  ],
+  "answer": 0,
+  "sol": "用容斥：100-（50+33+20）+（16+10+6）-3=100-103+32-3=26 個。",
+  "cheer": "容斥原理用得很漂亮！"
+ },
+ {
+  "id": "MC03",
+  "subject": "math",
+  "topic": "質數",
+  "diff": 2,
+  "q": "下列哪一組數，兩個都是質數？",
+  "options": [
+   "17 和 23",
+   "15 和 21",
+   "9 和 13",
+   "25 和 29"
+  ],
+  "answer": 0,
+  "sol": "17、23 都只有 1 和自己兩因數，皆質數。15=3×5、21=3×7、9=3×3、25=5×5 都是合數。",
+  "cheer": "質數判斷很穩！"
+ },
+ {
+  "id": "MC04",
+  "subject": "math",
+  "topic": "因數倍數",
+  "diff": 3,
+  "q": "甲、乙兩數的最小公倍數是 60，最大公因數是 4，且甲<乙。下列哪一組可能？",
+  "options": [
+   "12 和 20",
+   "4 和 60",
+   "8 和 30",
+   "6 和 40"
+  ],
+  "answer": 0,
+  "sol": "GCD×LCM=甲×乙=240。12×20=240✓ 且 GCD(12,20)=4✓、LCM=60✓。",
+  "cheer": "驗算每個選項，很嚴謹！"
+ },
+ {
+  "id": "MC05",
+  "subject": "math",
+  "topic": "分數",
+  "diff": 2,
+  "q": "5/8 + 3/8 - 1/4 = ?",
+  "options": [
+   "3/4",
+   "1/2",
+   "5/8",
+   "7/8"
+  ],
+  "answer": 0,
+  "sol": "5/8+3/8=8/8=1，1-1/4=3/4。",
+  "cheer": "分數加減一氣呵成！"
+ },
+ {
+  "id": "MC06",
+  "subject": "math",
+  "topic": "分數運算",
+  "diff": 3,
+  "q": "(2/3 + 1/4) × 12 = ?",
+  "options": [
+   "11",
+   "8",
+   "9",
+   "12"
+  ],
+  "answer": 0,
+  "sol": "先括號內：2/3+1/4=8/12+3/12=11/12。再×12=11。",
+  "cheer": "先括號後乘除，順序正確！"
+ },
+ {
+  "id": "MC07",
+  "subject": "math",
+  "topic": "小數",
+  "diff": 2,
+  "q": "2.5 × 0.4 = ?",
+  "options": [
+   "1",
+   "10",
+   "0.1",
+   "0.01"
+  ],
+  "answer": 0,
+  "sol": "25×4=100，三位小數點移三位→1.000=1。",
+  "cheer": "小數乘法位數抓對！"
+ },
+ {
+  "id": "MC08",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 2,
+  "q": "一件衣服原價 1200 元，打 7 折後再折 100 元，實付多少？",
+  "options": [
+   "740",
+   "800",
+   "700",
+   "900"
+  ],
+  "answer": 0,
+  "sol": "1200×0.7=840，再折100=740。",
+  "cheer": "折扣連續算正確！"
+ },
+ {
+  "id": "MC09",
+  "subject": "math",
+  "topic": "百分比",
+  "diff": 3,
+  "q": "某商品連續兩年漲價 10%，比兩年前漲了百分之幾？",
+  "options": [
+   "21%",
+   "20%",
+   "22%",
+   "11%"
+  ],
+  "answer": 0,
+  "sol": "設原100→第一年110→第二年121。漲了21%。連續百分比不能直接加！",
+  "cheer": "連續漲價陷阱避開了！"
+ },
+ {
+  "id": "MC10",
+  "subject": "math",
+  "topic": "比例",
+  "diff": 3,
+  "q": "甲乙速度比 3:4，同時從 A、B 兩地相向而行，2 小時相遇。已知 A、B 距 280 公里，甲速幾公里？",
+  "options": [
+   "60",
+   "70",
+   "80",
+   "40"
+  ],
+  "answer": 0,
+  "sol": "相向總速=280/2=140公里/時，甲速=140×3/(3+4)=60公里/時。",
+  "cheer": "比例配速度，漂亮！"
+ },
+ {
+  "id": "MC11",
+  "subject": "math",
+  "topic": "速率",
+  "diff": 3,
+  "q": "一列火車長 200 公尺，以每秒 25 公尺通過 800 公尺的隧道，需幾秒？",
+  "options": [
+   "40",
+   "32",
+   "60",
+   "42"
+  ],
+  "answer": 0,
+  "sol": "火車完全通過＝車尾走完隧道，距離=隧道+車長=800+200=1000，1000/25=40秒。",
+  "cheer": "通過隧道要加車長，細心！"
+ },
+ {
+  "id": "MC12",
+  "subject": "math",
+  "topic": "工程問題",
+  "diff": 3,
+  "q": "一件工作，甲、乙合作 6 天完成，甲單做 10 天完成。乙單獨做幾天？",
+  "options": [
+   "15",
+   "20",
+   "12",
+   "18"
+  ],
+  "answer": 0,
+  "sol": "合作每天1/6，甲每天1/10，乙每天=1/6-1/10=5/30-3/30=2/30=1/15，所以乙需15天。",
+  "cheer": "工程問題思路清楚！"
+ },
+ {
+  "id": "MC13",
+  "subject": "math",
+  "topic": "年齡問題",
+  "diff": 3,
+  "q": "哥哥比弟弟大 6 歲，3 年前哥哥年齡是弟弟的 3 倍，現在弟弟幾歲？",
+  "options": [
+   "6",
+   "9",
+   "12",
+   "3"
+  ],
+  "answer": 0,
+  "sol": "3年前哥=3倍弟，哥-弟=6永遠不變，所以3年前弟=6/2=3，現在弟=3+3=6歲。",
+  "cheer": "年齡差不變的觀念用得活！"
+ },
+ {
+  "id": "MC14",
+  "subject": "math",
+  "topic": "和差問題",
+  "diff": 2,
+  "q": "甲乙兩人共有 80 元，甲比乙多 12 元，乙有幾元？",
+  "options": [
+   "34",
+   "46",
+   "32",
+   "40"
+  ],
+  "answer": 0,
+  "sol": "乙=(80-12)/2=34，甲=46。",
+  "cheer": "和差公式記牢了！"
+ },
+ {
+  "id": "MC15",
+  "subject": "math",
+  "topic": "和差倍",
+  "diff": 3,
+  "q": "姊妹兩人共有 60 元，姊姊的錢是妹妹的 4 倍，妹妹有幾元？",
+  "options": [
+   "12",
+   "15",
+   "20",
+   "10"
+  ],
+  "answer": 0,
+  "sol": "姊+妹=60，姊=4妹→5妹=60→妹=12。",
+  "cheer": "和倍問題列式漂亮！"
+ },
+ {
+  "id": "MC16",
+  "subject": "math",
+  "topic": "幾何面積",
+  "diff": 3,
+  "q": "一個梯形上底 6、下底 10、高 4，面積是多少？",
+  "options": [
+   "32",
+   "40",
+   "60",
+   "16"
+  ],
+  "answer": 0,
+  "sol": "梯形面積=(上底+下底)×高÷2=(6+10)×4÷2=32。",
+  "cheer": "梯形公式正確！"
+ },
+ {
+  "id": "MC17",
+  "subject": "math",
+  "topic": "幾何面積",
+  "diff": 3,
+  "q": "半徑 6 公分的圓，面積是半徑 3 公分的圓的幾倍？",
+  "options": [
+   "4 倍",
+   "2 倍",
+   "3 倍",
+   "6 倍"
+  ],
+  "answer": 0,
+  "sol": "面積=πr²，比值=6²÷3²=36÷9=4，所以是4倍。半徑變2倍，面積變4倍（平方關係）。",
+  "cheer": "平方關係看出來了，厲害！"
+ },
+ {
+  "id": "MC18",
+  "subject": "math",
+  "topic": "周長面積",
+  "diff": 2,
+  "q": "一個正方形周長 24 公分，面積多少？",
+  "options": [
+   "36",
+   "24",
+   "48",
+   "16"
+  ],
+  "answer": 0,
+  "sol": "邊長=24÷4=6，面積=6²=36。",
+  "cheer": "周長反推面積，順！"
+ },
+ {
+  "id": "MC19",
+  "subject": "math",
+  "topic": "體積",
+  "diff": 3,
+  "q": "長方體底面積 24 平方公分、高 5 公分，體積多少？",
+  "options": [
+   "120",
+   "29",
+   "60",
+   "100"
+  ],
+  "answer": 0,
+  "sol": "體積=底面積×高=24×5=120立方公分。",
+  "cheer": "用底面積算體積，正確！"
+ },
+ {
+  "id": "MC20",
+  "subject": "math",
+  "topic": "空間想像",
+  "diff": 3,
+  "q": "將正方體切成 64 個小正方體（每邊4等分），切面共有幾刀？",
+  "options": [
+   "9",
+   "6",
+   "12",
+   "8"
+  ],
+  "answer": 0,
+  "sol": "每個方向切3刀分成4塊，3方向×3=9刀。",
+  "cheer": "空間思考清晰！"
+ },
+ {
+  "id": "MC21",
+  "subject": "math",
+  "topic": "角度",
+  "diff": 2,
+  "q": "一個直角的一半再加 15 度是？",
+  "options": [
+   "60度",
+   "45度",
+   "75度",
+   "30度"
+  ],
+  "answer": 0,
+  "sol": "直角=90，一半=45，加15=60度。",
+  "cheer": "角度計算很順！"
+ },
+ {
+  "id": "MC22",
+  "subject": "math",
+  "topic": "時鐘角度",
+  "diff": 3,
+  "q": "早上 9 點整，時針分針夾角幾度？",
+  "options": [
+   "90度",
+   "60度",
+   "120度",
+   "30度"
+  ],
+  "answer": 0,
+  "sol": "9點時針指9、分針指12，相差3格×30=90度（直角）。",
+  "cheer": "鐘面角度抓得準！"
+ },
+ {
+  "id": "MC23",
+  "subject": "math",
+  "topic": "規律",
+  "diff": 2,
+  "q": "2,5,10,17,26,... 第6個數是？",
+  "options": [
+   "37",
+   "36",
+   "38",
+   "35"
+  ],
+  "answer": 0,
+  "sol": "差是3,5,7,9,11...，每次多2。第6個=26+11=37。也是n²+1：1+1,4+1,9+1...",
+  "cheer": "找出兩種規律，靈活！"
+ },
+ {
+  "id": "MC24",
+  "subject": "math",
+  "topic": "數列規律",
+  "diff": 3,
+  "q": "2,6,18,54,... 第6個是？",
+  "options": [
+   "486",
+   "324",
+   "288",
+   "162"
+  ],
+  "answer": 0,
+  "sol": "等比，比3。第5個=54×3=162，第6個=162×3=486。",
+  "cheer": "等比數列認出來了！"
+ },
+ {
+  "id": "MC25",
+  "subject": "math",
+  "topic": "邏輯推理",
+  "diff": 3,
+  "q": "4人賽跑：甲說『我不是最後』，乙說『我第二』，丙說『甲第一』，丁說『丙最後』。實際只有1人說謊，誰是最後？",
+  "options": [
+   "丙",
+   "甲",
+   "乙",
+   "丁"
+  ],
+  "answer": 0,
+  "sol": "假設丁說謊→丙不是最後，但丙說甲第一(可能真)、乙說我第二(可能真)、甲說我不是最後(可能真)。試甲第一、乙第二、丁第三、丙最後，所有人說的都真，矛盾。改假設丙說謊→甲非第一，其餘三人真：丁說丙最後✓、乙第二、甲不是最後。所以順序乙第二、甲非第一非最後→甲第三、剩丁第一丙最後。丙說謊一人，符合。最後是丙。",
+  "cheer": "邏輯推理層層驗證，超強！"
+ },
+ {
+  "id": "MC26",
+  "subject": "math",
+  "topic": "計數",
+  "diff": 3,
+  "q": "從 0、1、2、3 四個數字中選 3 個排成不重複三位數（最高位不能為0），共幾個？",
+  "options": [
+   "18",
+   "24",
+   "12",
+   "16"
+  ],
+  "answer": 0,
+  "sol": "最高位3選(1,2,3)，十位3選(包含0但不重複)，個位2選：3×3×2=18個。",
+  "cheer": "分步計數很正確！"
+ },
+ {
+  "id": "MC27",
+  "subject": "math",
+  "topic": "邏輯",
+  "diff": 2,
+  "q": "5 個球分別是紅黃藍綠白，從中拿 2 個有幾種組合？",
+  "options": [
+   "10",
+   "20",
+   "15",
+   "25"
+  ],
+  "answer": 0,
+  "sol": "組合=5×4÷2=10。每對只算一次。",
+  "cheer": "組合計數，不重複！"
+ },
+ {
+  "id": "MC28",
+  "subject": "math",
+  "topic": "植樹問題",
+  "diff": 3,
+  "q": "圓形池塘周長 60 公尺，每 5 公尺種一棵樹，共幾棵？",
+  "options": [
+   "12",
+   "13",
+   "11",
+   "10"
+  ],
+  "answer": 0,
+  "sol": "圓形封閉的『棵數=段數』，60÷5=12。直線兩端都種才需+1，圓形不必。",
+  "cheer": "圓形植樹的差別記住了！"
+ },
+ {
+  "id": "MC29",
+  "subject": "math",
+  "topic": "平均",
+  "diff": 3,
+  "q": "小華 4 次月考平均 85 分，前 3 次平均 82 分，第 4 次幾分？",
+  "options": [
+   "94",
+   "88",
+   "91",
+   "85"
+  ],
+  "answer": 0,
+  "sol": "4次總分85×4=340，前3次82×3=246，第4次=340-246=94。",
+  "cheer": "平均換總分，技巧很熟！"
+ },
+ {
+  "id": "MC30",
+  "subject": "math",
+  "topic": "應用題",
+  "diff": 3,
+  "q": "甲乙兩瓶水共 50 公升，從甲倒 8 公升給乙後，兩瓶一樣多。原本甲幾公升？",
+  "options": [
+   "33",
+   "25",
+   "30",
+   "17"
+  ],
+  "answer": 0,
+  "sol": "倒後兩瓶各 25 公升。倒給乙後乙=25，所以倒前乙=25-8=17，甲=50-17=33。",
+  "cheer": "反推法用得漂亮！"
+ },
+ {
+  "id": "CX01",
+  "subject": "chinese",
+  "topic": "成語運用",
+  "diff": 1,
+  "q": "「妹妹考第一名，全家都________。」最適合填入？",
+  "options": [
+   "欣喜若狂",
+   "愁眉苦臉",
+   "怒髮衝冠",
+   "垂頭喪氣"
+  ],
+  "answer": 0,
+  "sol": "考第一是喜事，欣喜若狂＝高興到極點。其餘皆負面。",
+  "cheer": "成語配合情境很準！"
+ },
+ {
+  "id": "CX02",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "「亡羊補牢」的下一句是？",
+  "options": [
+   "猶未晚也",
+   "為時已晚",
+   "得不償失",
+   "事倍功半"
+  ],
+  "answer": 0,
+  "sol": "『亡羊補牢，猶未晚也』，比喻出錯後及時補救還來得及。",
+  "cheer": "成語典故記得清楚！"
+ },
+ {
+  "id": "CX03",
+  "subject": "chinese",
+  "topic": "成語辨析",
+  "diff": 2,
+  "q": "下列哪個成語形容『進步神速』？",
+  "options": [
+   "一日千里",
+   "千鈞一髮",
+   "一落千丈",
+   "半途而廢"
+  ],
+  "answer": 0,
+  "sol": "一日千里＝形容進展或進步極快。千鈞一髮＝情況危急；一落千丈＝退步快。",
+  "cheer": "近義成語辨識正確！"
+ },
+ {
+  "id": "CX04",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 3,
+  "q": "「________，金石為開」這句俗語空格填？",
+  "options": [
+   "精誠所至",
+   "水滴石穿",
+   "聚沙成塔",
+   "眾志成城"
+  ],
+  "answer": 0,
+  "sol": "『精誠所至，金石為開』比喻只要真心誠意，再難的事也能成功。",
+  "cheer": "成語俗諺難不倒你！"
+ },
+ {
+  "id": "CX05",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "與『畫蛇添足』意思相反的是？",
+  "options": [
+   "恰到好處",
+   "多此一舉",
+   "弄巧成拙",
+   "錦上添花"
+  ],
+  "answer": 0,
+  "sol": "畫蛇添足＝多做無益反而壞事，相反是恰到好處。多此一舉是近義。",
+  "cheer": "反義成語抓得對！"
+ },
+ {
+  "id": "CX06",
+  "subject": "chinese",
+  "topic": "字義",
+  "diff": 2,
+  "q": "「不恥下問」的『恥』是什麼意思？",
+  "options": [
+   "以…為羞恥",
+   "恥辱",
+   "羞愧的事",
+   "責怪"
+  ],
+  "answer": 0,
+  "sol": "『恥』在此作動詞『以…為羞恥』，不恥下問＝不以向地位低者請教為羞恥。",
+  "cheer": "虛詞活用理解很深！"
+ },
+ {
+  "id": "CX07",
+  "subject": "chinese",
+  "topic": "字音",
+  "diff": 2,
+  "q": "下列哪個『重』字讀音與其他不同？",
+  "options": [
+   "重新做",
+   "重要的",
+   "重複說",
+   "重來一次"
+  ],
+  "answer": 1,
+  "sol": "『重要』讀ㄓㄨㄥˋ（程度深），其餘『重新、重複、重來』讀ㄔㄨㄥˊ（再一次）。",
+  "cheer": "破音字辨識很細心！"
+ },
+ {
+  "id": "CX08",
+  "subject": "chinese",
+  "topic": "詞義",
+  "diff": 1,
+  "q": "「他做事很『踏實』」的『踏實』意思最接近？",
+  "options": [
+   "切實認真",
+   "走路穩",
+   "土地實在",
+   "快速"
+  ],
+  "answer": 0,
+  "sol": "踏實＝做事切實、不浮誇。",
+  "cheer": "詞義掌握正確！"
+ },
+ {
+  "id": "CX09",
+  "subject": "chinese",
+  "topic": "近義詞",
+  "diff": 1,
+  "q": "「美麗」的近義詞是？",
+  "options": [
+   "漂亮",
+   "醜陋",
+   "普通",
+   "快樂"
+  ],
+  "answer": 0,
+  "sol": "美麗≈漂亮。醜陋是反義。",
+  "cheer": "近義詞很清楚！"
+ },
+ {
+  "id": "CX10",
+  "subject": "chinese",
+  "topic": "反義詞",
+  "diff": 1,
+  "q": "「成功」的反義詞是？",
+  "options": [
+   "失敗",
+   "努力",
+   "勝利",
+   "完成"
+  ],
+  "answer": 0,
+  "sol": "成功↔失敗。",
+  "cheer": "反義詞掌握得好！"
+ },
+ {
+  "id": "CX11",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 2,
+  "q": "「失敗不可怕，可怕的是失敗後就不再嘗試。」這句話強調什麼？",
+  "options": [
+   "要勇於再嘗試",
+   "失敗很可怕",
+   "不要失敗",
+   "成功很難"
+  ],
+  "answer": 0,
+  "sol": "重點在『失敗後不再嘗試才可怕』，鼓勵人從失敗中再站起。",
+  "cheer": "抓到句子真正重點！"
+ },
+ {
+  "id": "CX12",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "短文：「老農把最好的種子留到隔年播種，鄰居笑他傻，他卻笑而不答。幾年後，他的田總是收成最好。」這故事告訴我們？",
+  "options": [
+   "有遠見、肯付出終有回報",
+   "種田很辛苦",
+   "不要笑別人",
+   "種子很重要"
+  ],
+  "answer": 0,
+  "sol": "老農犧牲眼前利益、著眼長遠，最終收穫最好。寓意是有遠見與付出的價值。",
+  "cheer": "讀懂故事寓意，理解力強！"
+ },
+ {
+  "id": "CX13",
+  "subject": "chinese",
+  "topic": "閱讀推論",
+  "diff": 3,
+  "q": "「他握緊拳頭，深吸一口氣，走上了講台。」由此可推論他當時可能的心情是？",
+  "options": [
+   "緊張但下定決心",
+   "非常生氣",
+   "很開心",
+   "想睡覺"
+  ],
+  "answer": 0,
+  "sol": "握拳、深呼吸是面對挑戰時克服緊張、鼓起勇氣的動作，推論為緊張但下定決心。",
+  "cheer": "從動作讀心情，推論很準！"
+ },
+ {
+  "id": "CX14",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 2,
+  "q": "「教室裡安靜得連一根針掉下去都聽得見。」這是什麼修辭？",
+  "options": [
+   "誇飾",
+   "譬喻",
+   "擬人",
+   "排比"
+  ],
+  "answer": 0,
+  "sol": "用『針掉下去都聽得見』誇大強調非常安靜，是誇飾。",
+  "cheer": "誇飾修辭判斷正確！"
+ },
+ {
+  "id": "CX15",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 2,
+  "q": "「小河唱著歌，往山下跑去。」用了什麼修辭？",
+  "options": [
+   "擬人",
+   "譬喻",
+   "誇飾",
+   "設問"
+  ],
+  "answer": 0,
+  "sol": "小河會『唱歌、跑』，把河當人來寫，是擬人。",
+  "cheer": "擬人修辭抓到了！"
+ },
+ {
+  "id": "CX16",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 3,
+  "q": "「白髮三千丈，緣愁似個長。」這兩句主要用了哪種修辭？",
+  "options": [
+   "誇飾",
+   "擬人",
+   "排比",
+   "對偶"
+  ],
+  "answer": 0,
+  "sol": "白髮不可能三千丈，用誇大手法強調愁緒之深，是誇飾。",
+  "cheer": "連古詩修辭都判斷得出，厲害！"
+ },
+ {
+  "id": "CX17",
+  "subject": "chinese",
+  "topic": "病句",
+  "diff": 2,
+  "q": "下列哪一句『沒有』語病？",
+  "options": [
+   "他的功課進步了很多。",
+   "他的功課大概也許進步了。",
+   "為了不讓成績不退步，他很努力。",
+   "這次他幾乎全部都差不多答對了。"
+  ],
+  "answer": 0,
+  "sol": "A通順。B『大概也許』重複；C雙重否定矛盾；D『幾乎全部都差不多』堆疊累贅。",
+  "cheer": "病句逐句檢查，很細心！"
+ },
+ {
+  "id": "CX18",
+  "subject": "chinese",
+  "topic": "標點",
+  "diff": 2,
+  "q": "「媽媽問我：『今天功課寫完了嗎___』」橫線處應填？",
+  "options": [
+   "？」",
+   "。」",
+   "！」",
+   "，」"
+  ],
+  "answer": 0,
+  "sol": "這是問句，引號內用問號，引號收尾。",
+  "cheer": "標點與引號搭配正確！"
+ },
+ {
+  "id": "CX19",
+  "subject": "chinese",
+  "topic": "部首",
+  "diff": 1,
+  "q": "「江、河、海、湖」這些字的共同部首是？",
+  "options": [
+   "水（氵）",
+   "工",
+   "可",
+   "胡"
+  ],
+  "answer": 0,
+  "sol": "都與水有關，部首是『水』，偏旁寫作三點水氵。",
+  "cheer": "部首歸納很正確！"
+ },
+ {
+  "id": "CX20",
+  "subject": "chinese",
+  "topic": "造詞",
+  "diff": 1,
+  "q": "「光」字不能和下列哪個字組成常用詞？",
+  "options": [
+   "光石",
+   "光線",
+   "光明",
+   "陽光"
+  ],
+  "answer": 0,
+  "sol": "光線、光明、陽光都是常用詞，『光石』不是。",
+  "cheer": "造詞辨識很好！"
+ },
+ {
+  "id": "CX21",
+  "subject": "chinese",
+  "topic": "一字多義",
+  "diff": 3,
+  "q": "下列『生』字，哪個與「陌生」的『生』意思最接近？",
+  "options": [
+   "生疏",
+   "生病",
+   "學生",
+   "花生"
+  ],
+  "answer": 0,
+  "sol": "陌生＝不熟悉，生疏也是『不熟悉』。其餘意思不同。",
+  "cheer": "一字多義辨析很厲害！"
+ },
+ {
+  "id": "CX22",
+  "subject": "chinese",
+  "topic": "文意理解",
+  "diff": 2,
+  "q": "「一分耕耘，一分收穫」這句話的意思是？",
+  "options": [
+   "付出多少努力就有多少收穫",
+   "種田會有收成",
+   "收穫很重要",
+   "耕種很辛苦"
+  ],
+  "answer": 0,
+  "sol": "比喻努力與成果成正比，付出才有回報。",
+  "cheer": "諺語寓意理解到位！"
+ },
+ {
+  "id": "CX23",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "形容『東西非常多』可用下列哪個成語？",
+  "options": [
+   "不計其數",
+   "寥寥可數",
+   "屈指可數",
+   "絕無僅有"
+  ],
+  "answer": 0,
+  "sol": "不計其數＝多到數不清。其餘三個都是『很少』的意思。",
+  "cheer": "多寡成語分辨清楚！"
+ },
+ {
+  "id": "CX24",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "短文：「螃蟹媽媽要小螃蟹走直路，小螃蟹說：媽媽，您先走給我看。」這個故事主要諷刺什麼？",
+  "options": [
+   "只會要求別人卻不以身作則",
+   "螃蟹走路橫行",
+   "媽媽很兇",
+   "小螃蟹不聽話"
+  ],
+  "answer": 0,
+  "sol": "螃蟹本來就橫著走，媽媽自己做不到卻要求小孩，諷刺『只要求別人、不以身作則』。",
+  "cheer": "讀出諷刺寓意，很有深度！"
+ },
+ {
+  "id": "CX25",
+  "subject": "chinese",
+  "topic": "語詞搭配",
+  "diff": 2,
+  "q": "下列詞語搭配哪一個正確？",
+  "options": [
+   "改善關係",
+   "改善困難",
+   "改善問題",
+   "改善錯誤"
+  ],
+  "answer": 0,
+  "sol": "『改善』常搭配關係、環境、生活。困難用克服、問題用解決、錯誤用改正。",
+  "cheer": "詞語搭配很準確！"
+ },
+ {
+  "id": "CX26",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 1,
+  "q": "「全神貫注」是形容？",
+  "options": [
+   "專心",
+   "發呆",
+   "緊張",
+   "生氣"
+  ],
+  "answer": 0,
+  "sol": "全神貫注＝注意力完全集中，形容很專心。",
+  "cheer": "成語意思掌握得好！"
+ },
+ {
+  "id": "CX27",
+  "subject": "chinese",
+  "topic": "句型",
+  "diff": 2,
+  "q": "「不但…，而且…」這組關聯詞表示？",
+  "options": [
+   "遞進關係",
+   "轉折關係",
+   "因果關係",
+   "選擇關係"
+  ],
+  "answer": 0,
+  "sol": "『不但…而且…』表示後句比前句更進一層，是遞進關係。",
+  "cheer": "關聯詞功能判斷正確！"
+ },
+ {
+  "id": "CX28",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 2,
+  "q": "「讀書要像蜜蜂採蜜，廣泛吸收才能釀出好蜜。」這句話建議我們？",
+  "options": [
+   "廣泛閱讀各種書",
+   "只讀一種書",
+   "少讀書",
+   "讀書要快"
+  ],
+  "answer": 0,
+  "sol": "用蜜蜂博採眾花比喻讀書要廣泛涉獵，才能融會貫通。",
+  "cheer": "比喻句寓意讀懂了！"
+ },
+ {
+  "id": "CX29",
+  "subject": "chinese",
+  "topic": "字形",
+  "diff": 2,
+  "q": "下列哪一組字沒有錯別字？",
+  "options": [
+   "再接再厲",
+   "再接再勵",
+   "在接在厲",
+   "再接在勵"
+  ],
+  "answer": 0,
+  "sol": "正確寫法是『再接再厲』（厲＝磨礪、振奮），不是『勵』。",
+  "cheer": "錯別字辨識很細心！"
+ },
+ {
+  "id": "CX30",
+  "subject": "chinese",
+  "topic": "文意",
+  "diff": 3,
+  "q": "「書到用時方恨少」的『恨』是什麼意思？",
+  "options": [
+   "遺憾、後悔",
+   "憎恨",
+   "生氣",
+   "害怕"
+  ],
+  "answer": 0,
+  "sol": "此處『恨』作『遺憾、悔恨』解，指要用時才後悔書讀得太少。",
+  "cheer": "古語字義理解很深！"
+ },
+ {
+  "id": "CY01",
+  "subject": "chinese",
+  "topic": "成語運用",
+  "diff": 1,
+  "q": "「他做事拖拖拉拉，總是________。」最適合填入？",
+  "options": [
+   "三天打魚兩天曬網",
+   "一鼓作氣",
+   "當機立斷",
+   "劍及履及"
+  ],
+  "answer": 0,
+  "sol": "形容做事不持之以恆，三天打魚兩天曬網最貼切。其餘三個都是積極果斷。",
+  "cheer": "成語對應情境很準！"
+ },
+ {
+  "id": "CY02",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "「青出於藍」比喻什麼？",
+  "options": [
+   "學生勝過老師",
+   "顏色很藍",
+   "顏色鮮豔",
+   "植物生長"
+  ],
+  "answer": 0,
+  "sol": "青色由藍草提煉而比藍更深，比喻學生勝過老師、後輩超越前輩。",
+  "cheer": "成語典故記得清楚！"
+ },
+ {
+  "id": "CY03",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "與『鶴立雞群』意思最接近的是？",
+  "options": [
+   "出類拔萃",
+   "平淡無奇",
+   "與眾不同",
+   "平庸無能"
+  ],
+  "answer": 0,
+  "sol": "鶴立雞群＝表現特別突出。出類拔萃是同義。與眾不同程度較弱。",
+  "cheer": "成語近義辨析正確！"
+ },
+ {
+  "id": "CY04",
+  "subject": "chinese",
+  "topic": "成語辨析",
+  "diff": 3,
+  "q": "下列成語中，哪一個的『目』指『眼睛』？",
+  "options": [
+   "目不轉睛",
+   "刮目相看",
+   "目空一切",
+   "面目一新"
+  ],
+  "answer": 0,
+  "sol": "目不轉睛＝眼睛不眨，這裡『目』就是眼睛。其他三個的目含意較廣，涉及看法、態度。",
+  "cheer": "細究字義很厲害！"
+ },
+ {
+  "id": "CY05",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "形容『非常珍惜時間』可用？",
+  "options": [
+   "分秒必爭",
+   "虛度光陰",
+   "好整以暇",
+   "得過且過"
+  ],
+  "answer": 0,
+  "sol": "分秒必爭＝連一分一秒都要爭取，形容珍惜時間。其餘三個皆相反。",
+  "cheer": "時間相關成語抓得對！"
+ },
+ {
+  "id": "CY06",
+  "subject": "chinese",
+  "topic": "字義",
+  "diff": 2,
+  "q": "「他『深』感歉意」的『深』是什麼意思？",
+  "options": [
+   "很、非常",
+   "深淺的深",
+   "深奧",
+   "顏色濃"
+  ],
+  "answer": 0,
+  "sol": "此處『深』作副詞，表程度『很、非常』，深感＝非常感到。",
+  "cheer": "虛詞用法理解到位！"
+ },
+ {
+  "id": "CY07",
+  "subject": "chinese",
+  "topic": "字音",
+  "diff": 3,
+  "q": "下列『便』字讀音相同的一組是？",
+  "options": [
+   "方便、便利",
+   "便宜、便當",
+   "便利、便宜",
+   "便當、便宜"
+  ],
+  "answer": 0,
+  "sol": "方便、便利的『便』都讀ㄅㄧㄢˋ。便宜的『便』讀ㄆㄧㄢˊ。",
+  "cheer": "破音字辨識超細心！"
+ },
+ {
+  "id": "CY08",
+  "subject": "chinese",
+  "topic": "字形",
+  "diff": 2,
+  "q": "下列哪一組『沒有』錯別字？",
+  "options": [
+   "明察秋毫",
+   "明查秋豪",
+   "名察秋毫",
+   "明察秋豪"
+  ],
+  "answer": 0,
+  "sol": "正確寫法是『明察秋毫』。秋毫指秋天野獸新長的細毛，比喻細微之物。",
+  "cheer": "成語字形記得正確！"
+ },
+ {
+  "id": "CY09",
+  "subject": "chinese",
+  "topic": "字形",
+  "diff": 2,
+  "q": "下列哪個詞語『沒有』錯字？",
+  "options": [
+   "按部就班",
+   "按步就班",
+   "暗部就班",
+   "按步就斑"
+  ],
+  "answer": 0,
+  "sol": "正確是『按部就班』。部=部類，班=次序，意指照次序進行。常被錯寫成『步』。",
+  "cheer": "易錯字寫對了！"
+ },
+ {
+  "id": "CY10",
+  "subject": "chinese",
+  "topic": "詞義",
+  "diff": 1,
+  "q": "「他『慷慨』地捐了一筆錢」的『慷慨』意思最接近？",
+  "options": [
+   "大方、不吝嗇",
+   "生氣激動",
+   "沒錢",
+   "小氣"
+  ],
+  "answer": 0,
+  "sol": "慷慨＝大方、樂於付出。雖也有『激昂』義（如『慷慨激昂』），但此句語境是捐錢，意為大方。",
+  "cheer": "看句子判斷詞義，正確！"
+ },
+ {
+  "id": "CY11",
+  "subject": "chinese",
+  "topic": "近義詞",
+  "diff": 2,
+  "q": "「謙虛」的近義詞是？",
+  "options": [
+   "謙遜",
+   "驕傲",
+   "自誇",
+   "得意"
+  ],
+  "answer": 0,
+  "sol": "謙虛≈謙遜，都是不自誇。其餘三個皆反義。",
+  "cheer": "近義詞掌握得好！"
+ },
+ {
+  "id": "CY12",
+  "subject": "chinese",
+  "topic": "反義詞",
+  "diff": 2,
+  "q": "「節儉」的反義詞是？",
+  "options": [
+   "浪費",
+   "勤奮",
+   "慷慨",
+   "樸素"
+  ],
+  "answer": 0,
+  "sol": "節儉↔浪費。慷慨偏中性、樸素近義。",
+  "cheer": "反義詞區分清楚！"
+ },
+ {
+  "id": "CY13",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 2,
+  "q": "「滴水穿石不是因為水的力量大，而是因為它持續不斷。」這句話強調？",
+  "options": [
+   "堅持的力量",
+   "水很有力",
+   "石頭很軟",
+   "時間流逝"
+  ],
+  "answer": 0,
+  "sol": "重點在『持續不斷』，強調堅持的價值，用滴水穿石比喻。",
+  "cheer": "主旨抓得準！"
+ },
+ {
+  "id": "CY14",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "短文：「漁夫每天日出而作日落而息，鄰居笑他沒有抱負。漁夫笑答：『有時間發呆看海，這就是我的抱負。』」這故事最想表達？",
+  "options": [
+   "不同的人有不同的人生價值",
+   "漁夫很懶",
+   "看海很重要",
+   "應該努力工作"
+  ],
+  "answer": 0,
+  "sol": "漁夫不認同世俗的『抱負』定義，故事在表達『價值因人而異』。",
+  "cheer": "讀懂深層寓意，理解力強！"
+ },
+ {
+  "id": "CY15",
+  "subject": "chinese",
+  "topic": "閱讀推論",
+  "diff": 3,
+  "q": "「她看著鏡子裡的自己，輕輕嘆了口氣，把手中的口紅放回了抽屜。」最可能推論她？",
+  "options": [
+   "決定不打扮了",
+   "很喜歡口紅",
+   "要去買新的",
+   "在數口紅"
+  ],
+  "answer": 0,
+  "sol": "嘆氣＋把口紅放回，可推論她原想化妝但放棄了。是『決定不打扮』的合理推論。",
+  "cheer": "從動作讀心情，推論細膩！"
+ },
+ {
+  "id": "CY16",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 2,
+  "q": "「他像一隻過街的老鼠，東躲西藏。」這句用了什麼修辭？",
+  "options": [
+   "譬喻",
+   "擬人",
+   "誇飾",
+   "設問"
+  ],
+  "answer": 0,
+  "sol": "用『像』把人比作老鼠，是譬喻（明喻）。",
+  "cheer": "譬喻辨識正確！"
+ },
+ {
+  "id": "CY17",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 2,
+  "q": "「太陽公公笑咪咪地探出頭來。」這句用了？",
+  "options": [
+   "擬人",
+   "譬喻",
+   "誇飾",
+   "對偶"
+  ],
+  "answer": 0,
+  "sol": "太陽『公公、笑咪咪、探頭』都是把它當人寫，是擬人。",
+  "cheer": "擬人修辭一眼就看出！"
+ },
+ {
+  "id": "CY18",
+  "subject": "chinese",
+  "topic": "修辭",
+  "diff": 3,
+  "q": "「春天像剛落地的娃娃，從頭到腳都是新的。」這句運用了？",
+  "options": [
+   "譬喻",
+   "擬人",
+   "誇飾",
+   "排比"
+  ],
+  "answer": 0,
+  "sol": "用『像』把春天比作娃娃，是譬喻。即便描寫春天『新』有擬人感，主修辭仍是譬喻。",
+  "cheer": "主修辭判斷準確！"
+ },
+ {
+  "id": "CY19",
+  "subject": "chinese",
+  "topic": "病句",
+  "diff": 3,
+  "q": "下列哪一句沒有語病？",
+  "options": [
+   "這本書很值得我們仔細閱讀。",
+   "他不僅成績好，而且還身體也很健康。",
+   "為了能不讓媽媽不擔心，我打電話回家。",
+   "這次旅行讓我認識了很多新的朋友們。"
+  ],
+  "answer": 0,
+  "sol": "A通順。B『而且還』堆疊；C雙重否定矛盾；D『朋友們』複數與『很多』重複。",
+  "cheer": "逐句檢查病句，很細心！"
+ },
+ {
+  "id": "CY20",
+  "subject": "chinese",
+  "topic": "標點",
+  "diff": 2,
+  "q": "「你問我『要不要去』___ 當然要去。」橫線處應填？",
+  "options": [
+   "，",
+   "？",
+   "。",
+   "！"
+  ],
+  "answer": 0,
+  "sol": "前句是引述的問句已用引號和問號，整句尚未結束，用逗號分隔。",
+  "cheer": "標點搭配很到位！"
+ },
+ {
+  "id": "CY21",
+  "subject": "chinese",
+  "topic": "部首",
+  "diff": 2,
+  "q": "「謝」字的部首是？",
+  "options": [
+   "言",
+   "身",
+   "寸",
+   "射"
+  ],
+  "answer": 0,
+  "sol": "謝＝言+射，部首是『言』，與說話有關（道謝、感謝是用言語）。",
+  "cheer": "部首與字義關聯找對了！"
+ },
+ {
+  "id": "CY22",
+  "subject": "chinese",
+  "topic": "一字多義",
+  "diff": 3,
+  "q": "下列『打』字，與「打電話」的『打』意思最接近？",
+  "options": [
+   "打主意",
+   "打人",
+   "打雷",
+   "打傘"
+  ],
+  "answer": 0,
+  "sol": "打電話的『打』＝做、進行。『打主意』也是『做、想』的引申。其餘是動作或自然現象。",
+  "cheer": "一字多義辨析厲害！"
+ },
+ {
+  "id": "CY23",
+  "subject": "chinese",
+  "topic": "文意理解",
+  "diff": 3,
+  "q": "「種瓜得瓜，種豆得豆」這句話的道理是？",
+  "options": [
+   "有什麼樣的因，就有什麼樣的果",
+   "種田會有收成",
+   "瓜和豆都好吃",
+   "農夫很辛苦"
+  ],
+  "answer": 0,
+  "sol": "借種植比喻因果關係，做什麼就會得到什麼樣的結果。",
+  "cheer": "諺語寓意讀懂了！"
+ },
+ {
+  "id": "CY24",
+  "subject": "chinese",
+  "topic": "文意",
+  "diff": 3,
+  "q": "「己所不欲，勿施於人」的意思是？",
+  "options": [
+   "自己不想要的，不要強加給別人",
+   "自己要的就給別人",
+   "別人給的不要拒絕",
+   "自己做的事不要做"
+  ],
+  "answer": 0,
+  "sol": "出自《論語》。意思是自己不願承受的，也不要加在別人身上，講同理心。",
+  "cheer": "古語理解很深！"
+ },
+ {
+  "id": "CY25",
+  "subject": "chinese",
+  "topic": "成語",
+  "diff": 2,
+  "q": "「井底之蛙」比喻什麼樣的人？",
+  "options": [
+   "見識短淺",
+   "住在井裡",
+   "很會跳",
+   "很聰明"
+  ],
+  "answer": 0,
+  "sol": "井底的青蛙只看得到井口大的天空，比喻見識短淺、眼界狹窄的人。",
+  "cheer": "成語比喻意思抓對！"
+ },
+ {
+  "id": "CY26",
+  "subject": "chinese",
+  "topic": "句型",
+  "diff": 2,
+  "q": "「雖然下雨了，但是我們還是出門了。」這是什麼關係的句型？",
+  "options": [
+   "轉折",
+   "遞進",
+   "因果",
+   "選擇"
+  ],
+  "answer": 0,
+  "sol": "『雖然…但是…』是轉折關係，後句的情況和前句相反。",
+  "cheer": "關聯詞功能掌握好！"
+ },
+ {
+  "id": "CY27",
+  "subject": "chinese",
+  "topic": "句型",
+  "diff": 2,
+  "q": "「因為下雨，所以路滑。」這是？",
+  "options": [
+   "因果",
+   "轉折",
+   "遞進",
+   "並列"
+  ],
+  "answer": 0,
+  "sol": "因為…所以…表示因果關係。",
+  "cheer": "關聯詞辨識正確！"
+ },
+ {
+  "id": "CY28",
+  "subject": "chinese",
+  "topic": "造詞",
+  "diff": 1,
+  "q": "「光」可以和下列哪個字組成『動詞性』的詞？",
+  "options": [
+   "光臨",
+   "光線",
+   "光明",
+   "陽光"
+  ],
+  "answer": 0,
+  "sol": "光臨＝來臨，是動詞（光顧蒞臨之意）。其餘都是名詞或形容詞。",
+  "cheer": "動詞辨識力很好！"
+ },
+ {
+  "id": "CY29",
+  "subject": "chinese",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "短文：「他第一次比賽就贏了，但他知道，這只是因為對手沒發揮實力。所以他更加用心練習。」由這段話可知他是個怎樣的人？",
+  "options": [
+   "謙虛、有自知之明",
+   "驕傲自滿",
+   "不在乎輸贏",
+   "運氣很好"
+  ],
+  "answer": 0,
+  "sol": "贏了卻能看清是對手失常、繼續努力，表現出謙虛和清楚認識自己的特質。",
+  "cheer": "從行為判斷人物性格，到位！"
+ },
+ {
+  "id": "CY30",
+  "subject": "chinese",
+  "topic": "語詞搭配",
+  "diff": 2,
+  "q": "下列哪一個搭配不恰當？",
+  "options": [
+   "改善生活",
+   "改善體重",
+   "改善關係",
+   "改善環境"
+  ],
+  "answer": 1,
+  "sol": "體重通常用『減輕』或『控制』，不用『改善』。生活、關係、環境都可以說改善。",
+  "cheer": "搭配習慣判斷對了！"
+ },
+ {
+  "id": "EX01",
+  "subject": "english",
+  "topic": "動詞時態",
+  "diff": 1,
+  "q": "They ______ basketball now.",
+  "options": [
+   "are playing",
+   "play",
+   "plays",
+   "played"
+  ],
+  "answer": 0,
+  "sol": "now表現在進行，用 be + Ving，主詞they用are→are playing。",
+  "cheer": "現在進行式抓得準！"
+ },
+ {
+  "id": "EX02",
+  "subject": "english",
+  "topic": "be動詞",
+  "diff": 1,
+  "q": "My brother and I ______ students.",
+  "options": [
+   "are",
+   "is",
+   "am",
+   "be"
+  ],
+  "answer": 0,
+  "sol": "主詞 My brother and I 是複數，be動詞用are。",
+  "cheer": "複數主詞配are，正確！"
+ },
+ {
+  "id": "EX03",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 1,
+  "q": "Which is a fruit?",
+  "options": [
+   "banana",
+   "table",
+   "pencil",
+   "window"
+  ],
+  "answer": 0,
+  "sol": "banana香蕉是水果，其餘為物品。",
+  "cheer": "基礎字彙很穩！"
+ },
+ {
+  "id": "EX04",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "Which word means \"very happy\"?",
+  "options": [
+   "excited",
+   "tired",
+   "angry",
+   "hungry"
+  ],
+  "answer": 0,
+  "sol": "excited＝興奮、非常開心。tired累、angry生氣、hungry餓。",
+  "cheer": "情緒字彙辨識正確！"
+ },
+ {
+  "id": "EX05",
+  "subject": "english",
+  "topic": "介系詞",
+  "diff": 2,
+  "q": "The party is ______ Sunday.",
+  "options": [
+   "on",
+   "in",
+   "at",
+   "to"
+  ],
+  "answer": 0,
+  "sol": "星期幾前用 on：on Sunday。",
+  "cheer": "時間介系詞用對了！"
+ },
+ {
+  "id": "EX06",
+  "subject": "english",
+  "topic": "介系詞",
+  "diff": 2,
+  "q": "I get up ______ seven o'clock.",
+  "options": [
+   "at",
+   "on",
+   "in",
+   "of"
+  ],
+  "answer": 0,
+  "sol": "幾點鐘前用 at：at seven o'clock。",
+  "cheer": "時刻介系詞正確！"
+ },
+ {
+  "id": "EX07",
+  "subject": "english",
+  "topic": "疑問詞",
+  "diff": 2,
+  "q": "______ are you from? — I'm from Taiwan.",
+  "options": [
+   "Where",
+   "What",
+   "Who",
+   "When"
+  ],
+  "answer": 0,
+  "sol": "問來自哪裡用 Where are you from。",
+  "cheer": "疑問詞選對了！"
+ },
+ {
+  "id": "EX08",
+  "subject": "english",
+  "topic": "疑問詞",
+  "diff": 2,
+  "q": "______ many books do you have?",
+  "options": [
+   "How",
+   "What",
+   "Who",
+   "Where"
+  ],
+  "answer": 0,
+  "sol": "問數量用 How many。",
+  "cheer": "How many 用得對！"
+ },
+ {
+  "id": "EX09",
+  "subject": "english",
+  "topic": "複數",
+  "diff": 2,
+  "q": "Which is the correct plural?",
+  "options": [
+   "leaves",
+   "leafs",
+   "leafes",
+   "leave"
+  ],
+  "answer": 0,
+  "sol": "leaf字尾f變ves→leaves。",
+  "cheer": "不規則複數記住了！"
+ },
+ {
+  "id": "EX10",
+  "subject": "english",
+  "topic": "複數",
+  "diff": 1,
+  "q": "one box, two ______",
+  "options": [
+   "boxes",
+   "boxs",
+   "box",
+   "boxies"
+  ],
+  "answer": 0,
+  "sol": "字尾x加es→boxes。",
+  "cheer": "複數變化規則清楚！"
+ },
+ {
+  "id": "EX11",
+  "subject": "english",
+  "topic": "動詞三單",
+  "diff": 2,
+  "q": "He ______ TV every evening.",
+  "options": [
+   "watches",
+   "watch",
+   "watching",
+   "watched"
+  ],
+  "answer": 0,
+  "sol": "第三人稱單數+習慣，watch字尾ch加es→watches。",
+  "cheer": "三單加es規則很熟！"
+ },
+ {
+  "id": "EX12",
+  "subject": "english",
+  "topic": "過去式",
+  "diff": 2,
+  "q": "We ______ a movie last night.",
+  "options": [
+   "saw",
+   "see",
+   "sees",
+   "seeing"
+  ],
+  "answer": 0,
+  "sol": "last night過去，see的過去式是saw。",
+  "cheer": "不規則過去式記得牢！"
+ },
+ {
+  "id": "EX13",
+  "subject": "english",
+  "topic": "比較級",
+  "diff": 3,
+  "q": "An elephant is ______ than a dog.",
+  "options": [
+   "bigger",
+   "big",
+   "biggest",
+   "more big"
+  ],
+  "answer": 0,
+  "sol": "兩者比較用比較級，big重複g加er→bigger。",
+  "cheer": "比較級拼寫正確！"
+ },
+ {
+  "id": "EX14",
+  "subject": "english",
+  "topic": "最高級",
+  "diff": 3,
+  "q": "This is the ______ book in the library.",
+  "options": [
+   "best",
+   "good",
+   "better",
+   "more good"
+  ],
+  "answer": 0,
+  "sol": "the+最高級表『最…』，good的最高級是best。",
+  "cheer": "不規則最高級記住了！"
+ },
+ {
+  "id": "EX15",
+  "subject": "english",
+  "topic": "代名詞",
+  "diff": 2,
+  "q": "That is ______ pencil. (那是她的鉛筆)",
+  "options": [
+   "her",
+   "she",
+   "hers",
+   "he"
+  ],
+  "answer": 0,
+  "sol": "her+名詞表『她的』。hers單獨用。",
+  "cheer": "所有格用得準！"
+ },
+ {
+  "id": "EX16",
+  "subject": "english",
+  "topic": "冠詞",
+  "diff": 2,
+  "q": "I have ______ apple and ______ banana.",
+  "options": [
+   "an, a",
+   "a, an",
+   "an, an",
+   "a, a"
+  ],
+  "answer": 0,
+  "sol": "apple母音開頭用an，banana子音開頭用a。",
+  "cheer": "冠詞a/an用對了！"
+ },
+ {
+  "id": "EX17",
+  "subject": "english",
+  "topic": "日常對話",
+  "diff": 2,
+  "q": "\"Thank you very much.\" The best reply is:",
+  "options": [
+   "You're welcome.",
+   "I'm sorry.",
+   "No problem? Goodbye.",
+   "Yes, I am."
+  ],
+  "answer": 0,
+  "sol": "被道謝回 You're welcome（不客氣）。",
+  "cheer": "禮貌回應反應快！"
+ },
+ {
+  "id": "EX18",
+  "subject": "english",
+  "topic": "日常對話",
+  "diff": 2,
+  "q": "\"What's your favorite subject?\" A good answer:",
+  "options": [
+   "Math.",
+   "Monday.",
+   "Five years old.",
+   "It's raining."
+  ],
+  "answer": 0,
+  "sol": "問最喜歡的科目，回答一個科目名 Math。",
+  "cheer": "情境對話理解正確！"
+ },
+ {
+  "id": "EX19",
+  "subject": "english",
+  "topic": "字彙分類",
+  "diff": 2,
+  "q": "Which is NOT an animal?",
+  "options": [
+   "chair",
+   "tiger",
+   "rabbit",
+   "monkey"
+  ],
+  "answer": 0,
+  "sol": "chair椅子不是動物。",
+  "cheer": "分類眼力很好！"
+ },
+ {
+  "id": "EX20",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 1,
+  "q": "What color do you get by mixing blue and yellow?",
+  "options": [
+   "green",
+   "red",
+   "purple",
+   "orange"
+  ],
+  "answer": 0,
+  "sol": "藍+黃=綠 green。",
+  "cheer": "顏色常識+英文，雙贏！"
+ },
+ {
+  "id": "EX21",
+  "subject": "english",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "\"Sam has two sisters. One is 8, the other is 12. Sam is older than both.\" If Sam is older than 12, which age is possible for Sam?",
+  "options": [
+   "15",
+   "10",
+   "8",
+   "11"
+  ],
+  "answer": 0,
+  "sol": "Sam比12大，只有15符合（>12）。",
+  "cheer": "英文閱讀+推理，超強！"
+ },
+ {
+  "id": "EX22",
+  "subject": "english",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "\"The shop opens at 9 and closes at 6. It is 7 now.\" Is the shop open?",
+  "options": [
+   "No",
+   "Yes",
+   "Maybe",
+   "Cannot tell"
+  ],
+  "answer": 0,
+  "sol": "7點已超過關門時間6點(假設下午)，店關了。No。",
+  "cheer": "閱讀判斷很準確！"
+ },
+ {
+  "id": "EX23",
+  "subject": "english",
+  "topic": "時態",
+  "diff": 2,
+  "q": "Look! It ______ now.",
+  "options": [
+   "is raining",
+   "rains",
+   "rained",
+   "rain"
+  ],
+  "answer": 0,
+  "sol": "Look!+now表此刻正在發生，現在進行式 is raining。",
+  "cheer": "時態判斷正確！"
+ },
+ {
+  "id": "EX24",
+  "subject": "english",
+  "topic": "句型",
+  "diff": 2,
+  "q": "______ a beautiful day!",
+  "options": [
+   "What",
+   "How",
+   "Which",
+   "Where"
+  ],
+  "answer": 0,
+  "sol": "感嘆句 What + a + 形容詞 + 名詞：What a beautiful day!",
+  "cheer": "感嘆句型用對了！"
+ },
+ {
+  "id": "EX25",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "A person who teaches students is a ______.",
+  "options": [
+   "teacher",
+   "doctor",
+   "driver",
+   "cook"
+  ],
+  "answer": 0,
+  "sol": "teach+er＝teacher 老師，教學生的人。",
+  "cheer": "用解釋選字很到位！"
+ },
+ {
+  "id": "EX26",
+  "subject": "english",
+  "topic": "動詞",
+  "diff": 2,
+  "q": "She can ______ very well.",
+  "options": [
+   "sing",
+   "sings",
+   "sang",
+   "singing"
+  ],
+  "answer": 0,
+  "sol": "助動詞can後接原形動詞 sing。",
+  "cheer": "助動詞後用原形，正確！"
+ },
+ {
+  "id": "EX27",
+  "subject": "english",
+  "topic": "否定句",
+  "diff": 2,
+  "q": "I ______ like carrots.",
+  "options": [
+   "don't",
+   "doesn't",
+   "not",
+   "am not"
+  ],
+  "answer": 0,
+  "sol": "主詞I的一般動詞否定用 don't + 原形。",
+  "cheer": "否定句結構清楚！"
+ },
+ {
+  "id": "EX28",
+  "subject": "english",
+  "topic": "there be",
+  "diff": 2,
+  "q": "______ four seasons in a year.",
+  "options": [
+   "There are",
+   "There is",
+   "It is",
+   "They are"
+  ],
+  "answer": 0,
+  "sol": "four seasons複數，用 There are。",
+  "cheer": "there be 單複數抓對！"
+ },
+ {
+  "id": "EX29",
+  "subject": "english",
+  "topic": "閱讀",
+  "diff": 3,
+  "q": "\"Tom likes red and blue. He doesn't like green. His bag is his favorite color and it's not red.\" What color is his bag?",
+  "options": [
+   "blue",
+   "red",
+   "green",
+   "yellow"
+  ],
+  "answer": 0,
+  "sol": "喜歡red和blue，書包是喜歡的顏色但不是red→blue。",
+  "cheer": "條件推理一步步解開，棒！"
+ },
+ {
+  "id": "EX30",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 1,
+  "q": "Which word means the opposite of \"big\"?",
+  "options": [
+   "small",
+   "tall",
+   "long",
+   "fast"
+  ],
+  "answer": 0,
+  "sol": "big的反義是small小。",
+  "cheer": "反義字掌握得好！"
+ },
+ {
+  "id": "EY01",
+  "subject": "english",
+  "topic": "動詞時態",
+  "diff": 1,
+  "q": "My father ______ to work by car every day.",
+  "options": [
+   "goes",
+   "go",
+   "going",
+   "went"
+  ],
+  "answer": 0,
+  "sol": "主詞第三人稱單數+every day習慣，現在簡單式，go+es→goes。",
+  "cheer": "動詞時態判斷正確！"
+ },
+ {
+  "id": "EY02",
+  "subject": "english",
+  "topic": "be動詞",
+  "diff": 2,
+  "q": "There ______ a cat and three dogs in the yard.",
+  "options": [
+   "is",
+   "are",
+   "am",
+   "be"
+  ],
+  "answer": 0,
+  "sol": "There be 句型看『最靠近 be 的主詞』，a cat 是單數，用 is。",
+  "cheer": "靠近原則記住了！"
+ },
+ {
+  "id": "EY03",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "Which word means \"a meal in the morning\"?",
+  "options": [
+   "breakfast",
+   "lunch",
+   "dinner",
+   "snack"
+  ],
+  "answer": 0,
+  "sol": "breakfast＝早餐。lunch午餐、dinner晚餐、snack點心。",
+  "cheer": "用英文解釋選字，正確！"
+ },
+ {
+  "id": "EY04",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "Which is NOT a season?",
+  "options": [
+   "Friday",
+   "spring",
+   "summer",
+   "winter"
+  ],
+  "answer": 0,
+  "sol": "Friday是星期不是季節。其餘三個都是季節。",
+  "cheer": "分類辨識很好！"
+ },
+ {
+  "id": "EY05",
+  "subject": "english",
+  "topic": "介系詞",
+  "diff": 2,
+  "q": "I was born ______ March.",
+  "options": [
+   "in",
+   "on",
+   "at",
+   "of"
+  ],
+  "answer": 0,
+  "sol": "月份前用 in：in March。",
+  "cheer": "月份配 in 正確！"
+ },
+ {
+  "id": "EY06",
+  "subject": "english",
+  "topic": "介系詞",
+  "diff": 3,
+  "q": "The book is ______ the table.",
+  "options": [
+   "on",
+   "in",
+   "under",
+   "at"
+  ],
+  "answer": 0,
+  "sol": "書放在桌面上用 on（接觸面）。in 是裡面、under 是下面。",
+  "cheer": "位置介系詞用對了！"
+ },
+ {
+  "id": "EY07",
+  "subject": "english",
+  "topic": "疑問詞",
+  "diff": 2,
+  "q": "______ is your favorite color?",
+  "options": [
+   "What",
+   "Where",
+   "When",
+   "Who"
+  ],
+  "answer": 0,
+  "sol": "問東西用 What。",
+  "cheer": "疑問詞選對了！"
+ },
+ {
+  "id": "EY08",
+  "subject": "english",
+  "topic": "疑問詞",
+  "diff": 2,
+  "q": "______ old are you?",
+  "options": [
+   "How",
+   "What",
+   "Who",
+   "When"
+  ],
+  "answer": 0,
+  "sol": "問年齡用 How old。",
+  "cheer": "How old 用對了！"
+ },
+ {
+  "id": "EY09",
+  "subject": "english",
+  "topic": "複數",
+  "diff": 2,
+  "q": "Which is the correct plural form of \"foot\"?",
+  "options": [
+   "feet",
+   "foots",
+   "feets",
+   "foot"
+  ],
+  "answer": 0,
+  "sol": "foot 的複數是 feet，不規則變化。",
+  "cheer": "不規則複數記得！"
+ },
+ {
+  "id": "EY10",
+  "subject": "english",
+  "topic": "複數",
+  "diff": 1,
+  "q": "one mouse, two ______",
+  "options": [
+   "mice",
+   "mouses",
+   "mouse",
+   "micen"
+  ],
+  "answer": 0,
+  "sol": "mouse 複數是 mice（不規則）。",
+  "cheer": "不規則複數記得！"
+ },
+ {
+  "id": "EY11",
+  "subject": "english",
+  "topic": "動詞三單",
+  "diff": 2,
+  "q": "She ______ her homework every evening.",
+  "options": [
+   "does",
+   "do",
+   "doing",
+   "did"
+  ],
+  "answer": 0,
+  "sol": "主詞 She 第三人稱單數+every evening習慣，do→does。",
+  "cheer": "三單動詞變化正確！"
+ },
+ {
+  "id": "EY12",
+  "subject": "english",
+  "topic": "過去式",
+  "diff": 2,
+  "q": "I ______ a delicious cake yesterday.",
+  "options": [
+   "ate",
+   "eat",
+   "eats",
+   "eating"
+  ],
+  "answer": 0,
+  "sol": "yesterday 過去，eat 的過去式是 ate。",
+  "cheer": "不規則過去式記得！"
+ },
+ {
+  "id": "EY13",
+  "subject": "english",
+  "topic": "過去式",
+  "diff": 2,
+  "q": "We ______ to the beach last summer.",
+  "options": [
+   "went",
+   "go",
+   "goes",
+   "going"
+  ],
+  "answer": 0,
+  "sol": "last summer 過去，go 的過去式是 went。",
+  "cheer": "過去式變化正確！"
+ },
+ {
+  "id": "EY14",
+  "subject": "english",
+  "topic": "比較級",
+  "diff": 3,
+  "q": "My brother is ______ than I.",
+  "options": [
+   "taller",
+   "tall",
+   "tallest",
+   "more tall"
+  ],
+  "answer": 0,
+  "sol": "兩者比較用比較級。tall+er→taller。",
+  "cheer": "比較級拼寫正確！"
+ },
+ {
+  "id": "EY15",
+  "subject": "english",
+  "topic": "最高級",
+  "diff": 3,
+  "q": "Mt. Everest is the ______ mountain in the world.",
+  "options": [
+   "highest",
+   "high",
+   "higher",
+   "more high"
+  ],
+  "answer": 0,
+  "sol": "the+最高級表『最…』。high→highest。",
+  "cheer": "最高級用法正確！"
+ },
+ {
+  "id": "EY16",
+  "subject": "english",
+  "topic": "代名詞",
+  "diff": 2,
+  "q": "This pencil is ______. (這支筆是我的)",
+  "options": [
+   "mine",
+   "my",
+   "me",
+   "I"
+  ],
+  "answer": 0,
+  "sol": "mine＝我的（東西），單獨用。my 後須加名詞。",
+  "cheer": "所有格代名詞清楚！"
+ },
+ {
+  "id": "EY17",
+  "subject": "english",
+  "topic": "冠詞",
+  "diff": 2,
+  "q": "He is ______ honest boy.",
+  "options": [
+   "an",
+   "a",
+   "the",
+   "of"
+  ],
+  "answer": 0,
+  "sol": "honest 的 h 不發音，發音以母音開頭，用 an。冠詞看發音不看字母。",
+  "cheer": "看發音不看字母，細心！"
+ },
+ {
+  "id": "EY18",
+  "subject": "english",
+  "topic": "日常對話",
+  "diff": 2,
+  "q": "\"I'm sorry.\" The best reply is:",
+  "options": [
+   "That's OK.",
+   "Thank you.",
+   "Yes, please.",
+   "Goodbye."
+  ],
+  "answer": 0,
+  "sol": "被道歉回 That's OK / It's all right（沒關係）。",
+  "cheer": "禮貌回應反應快！"
+ },
+ {
+  "id": "EY19",
+  "subject": "english",
+  "topic": "日常對話",
+  "diff": 2,
+  "q": "\"Could you help me?\" A good reply:",
+  "options": [
+   "Sure, no problem.",
+   "I'm twelve.",
+   "It's raining.",
+   "I have a dog."
+  ],
+  "answer": 0,
+  "sol": "被請求幫忙回應 Sure / Of course / No problem。",
+  "cheer": "情境對話到位！"
+ },
+ {
+  "id": "EY20",
+  "subject": "english",
+  "topic": "否定句",
+  "diff": 2,
+  "q": "He ______ play basketball.",
+  "options": [
+   "doesn't",
+   "don't",
+   "not",
+   "isn't"
+  ],
+  "answer": 0,
+  "sol": "主詞 He 第三人稱單數的一般動詞否定用 doesn't+原形。",
+  "cheer": "否定句結構正確！"
+ },
+ {
+  "id": "EY21",
+  "subject": "english",
+  "topic": "there be",
+  "diff": 2,
+  "q": "______ five students in the classroom.",
+  "options": [
+   "There are",
+   "There is",
+   "It is",
+   "They are"
+  ],
+  "answer": 0,
+  "sol": "five students 複數，用 There are。",
+  "cheer": "there be 單複數抓對！"
+ },
+ {
+  "id": "EY22",
+  "subject": "english",
+  "topic": "時態",
+  "diff": 2,
+  "q": "Listen! Someone ______ at the door.",
+  "options": [
+   "is knocking",
+   "knocks",
+   "knocked",
+   "knock"
+  ],
+  "answer": 0,
+  "sol": "Listen! 表此刻發生，現在進行式 is knocking。",
+  "cheer": "時態提示詞抓得準！"
+ },
+ {
+  "id": "EY23",
+  "subject": "english",
+  "topic": "句型",
+  "diff": 3,
+  "q": "______ beautiful flowers they are!",
+  "options": [
+   "What",
+   "How",
+   "Which",
+   "Where"
+  ],
+  "answer": 0,
+  "sol": "感嘆句 What+形容詞+複數名詞：What beautiful flowers!",
+  "cheer": "感嘆句結構正確！"
+ },
+ {
+  "id": "EY24",
+  "subject": "english",
+  "topic": "句型",
+  "diff": 3,
+  "q": "______ tall the boy is!",
+  "options": [
+   "How",
+   "What",
+   "Which",
+   "Where"
+  ],
+  "answer": 0,
+  "sol": "感嘆句 How+形容詞+主詞+動詞：How tall the boy is!",
+  "cheer": "How感嘆句用對！"
+ },
+ {
+  "id": "EY25",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "A person who flies an airplane is a ______.",
+  "options": [
+   "pilot",
+   "driver",
+   "cook",
+   "singer"
+  ],
+  "answer": 0,
+  "sol": "pilot＝飛行員/機師。driver 司機、cook 廚師、singer 歌手。",
+  "cheer": "職業字彙正確！"
+ },
+ {
+  "id": "EY26",
+  "subject": "english",
+  "topic": "字彙",
+  "diff": 2,
+  "q": "Which animal can fly?",
+  "options": [
+   "bird",
+   "fish",
+   "dog",
+   "cat"
+  ],
+  "answer": 0,
+  "sol": "bird＝鳥，會飛。",
+  "cheer": "動物特性配對好！"
+ },
+ {
+  "id": "EY27",
+  "subject": "english",
+  "topic": "閱讀理解",
+  "diff": 3,
+  "q": "\"The movie starts at 7:00 and ends at 9:30.\" How long is the movie?",
+  "options": [
+   "2 hours 30 minutes",
+   "2 hours",
+   "3 hours",
+   "1 hour 30 minutes"
+  ],
+  "answer": 0,
+  "sol": "9:30 - 7:00 = 2小時30分。",
+  "cheer": "時間差計算正確！"
+ },
+ {
+  "id": "EY28",
+  "subject": "english",
+  "topic": "閱讀推理",
+  "diff": 3,
+  "q": "\"Amy is taller than Ben. Ben is taller than Cindy. Cindy is taller than Dan.\" Who is the tallest?",
+  "options": [
+   "Amy",
+   "Ben",
+   "Cindy",
+   "Dan"
+  ],
+  "answer": 0,
+  "sol": "Amy>Ben>Cindy>Dan，Amy 最高。",
+  "cheer": "多重比較推理正確！"
+ },
+ {
+  "id": "EY29",
+  "subject": "english",
+  "topic": "閱讀",
+  "diff": 3,
+  "q": "\"Tom has 10 candies. He gives 3 to Lily and eats 2. How many does he have left?\"",
+  "options": [
+   "5",
+   "6",
+   "7",
+   "4"
+  ],
+  "answer": 0,
+  "sol": "10-3-2=5。",
+  "cheer": "英文閱讀+計算正確！"
+ },
+ {
+  "id": "EY30",
+  "subject": "english",
+  "topic": "動詞",
+  "diff": 2,
+  "q": "You should ______ your teeth before going to bed.",
+  "options": [
+   "brush",
+   "brushes",
+   "brushing",
+   "brushed"
+  ],
+  "answer": 0,
+  "sol": "助動詞 should 後接原形動詞 brush。",
+  "cheer": "助動詞後用原形，正確！"
+ }
+];
+const TOPIC_TEACH = {
+ "數論": {
+  "key": "先找出題目真正的條件，再把符合的數一個一個檢查，不要用猜的。",
+  "trap": "最常見的錯是只滿足一個條件就選，忘了驗證另一個條件。"
+ },
+ "餘數": {
+  "key": "餘數題要記住：被除數 = 除數 × 商 + 餘數，餘數一定比除數小。",
+  "trap": "容易把『餘數』和『商』搞混，或忘記餘數不能大於或等於除數。"
+ },
+ "質數": {
+  "key": "質數只有 1 和它自己兩個因數；2 是唯一的偶數質數。",
+  "trap": "常忘記 1 不是質數，或把 9、15、21 這種看起來像質數的合數選錯。"
+ },
+ "因數倍數": {
+  "key": "最大公因數用『公同質因數取最小次方』，最小公倍數取最大次方。",
+  "trap": "容易把最大公因數和最小公倍數的取法弄反。"
+ },
+ "質因數": {
+  "key": "先把數拆成質因數連乘，很多題目就會變簡單。",
+  "trap": "分解不完全，例如 12 只拆成 2×6 沒繼續拆成 2×2×3。"
+ },
+ "分數": {
+  "key": "分數加減一定要先通分（分母變一樣）才能算。",
+  "trap": "最常見錯誤是分子分母直接相加，沒有通分。"
+ },
+ "分數運算": {
+  "key": "除以一個分數，等於乘以它的『倒數』。",
+  "trap": "除法忘記轉成乘倒數，或把哪個分數取倒數弄錯。"
+ },
+ "分數應用": {
+  "key": "看清楚比例是對『全部』還是對『剩下的』，這兩者完全不同。",
+  "trap": "把『剩下的 1/3』當成『全部的 1/3』，這是私中最愛設的陷阱。"
+ },
+ "分數比較": {
+  "key": "比較分數大小，最穩的方法是通分成同分母再比分子。",
+  "trap": "用分子或分母單獨比大小，那是錯的。"
+ },
+ "小數": {
+  "key": "小數乘法：先當整數乘，再數兩個數共幾位小數，點回去。",
+  "trap": "小數點位數數錯，答案大十倍或小十倍。"
+ },
+ "小數應用": {
+  "key": "先把情境列成算式，再算小數，不要心算硬湊。",
+  "trap": "沒列式直接湊答案，數字一大就錯。"
+ },
+ "比與比例": {
+  "key": "比例題先算『一份是多少』，後面就都好算了。",
+  "trap": "沒先求一份的量，直接用比例數字去乘除。"
+ },
+ "比例": {
+  "key": "先把總份數加起來，求出一份的量，再回答問題。",
+  "trap": "忘記先求一份，或份數加錯。"
+ },
+ "比例應用": {
+  "key": "找出『不變的量』（例如差不變、和不變）是解題鑰匙。",
+  "trap": "沒抓住哪個量不變，被變動的數字繞暈。"
+ },
+ "百分比": {
+  "key": "百分比要看清楚是『誰的』百分比，基準不同答案就不同。",
+  "trap": "連續漲跌不能直接相加減（漲20%再跌20%不會回原點）。"
+ },
+ "速率": {
+  "key": "來回不同速度時，不能直接把速度平均，要分別算時間。",
+  "trap": "直接把去程回程速度相加除以二，這是錯的。"
+ },
+ "工程問題": {
+  "key": "把『整件工作』看成 1，每人每天做幾分之幾，再相加。",
+  "trap": "用天數直接相加減，沒換成『每天做多少』。"
+ },
+ "行程問題": {
+  "key": "相向而行用『速度和』，同向追趕用『速度差』。",
+  "trap": "相遇和追及的公式用反了。"
+ },
+ "追及問題": {
+  "key": "追及：先算領先距離，再除以兩人的速度差。",
+  "trap": "忘記算先出發者已經走的距離。"
+ },
+ "年齡問題": {
+  "key": "兩人的年齡差永遠不變，這是解年齡題的關鍵。",
+  "trap": "以為年齡差會變，或忘記用『差不變』。"
+ },
+ "雞兔同籠": {
+  "key": "假設全部是其中一種，再用腳的差距換算另一種。",
+  "trap": "假設後忘記用差距回推，或頭腳數代錯。"
+ },
+ "和差問題": {
+  "key": "大數=(和+差)÷2，小數=(和−差)÷2，背起來。",
+  "trap": "公式記反，或把和差代錯位置。"
+ },
+ "和差倍": {
+  "key": "先找出『幾倍的差』對應到實際數字，再回推。",
+  "trap": "沒分清楚是差還是倍，列式錯。"
+ },
+ "盈虧問題": {
+  "key": "兩次分配的差額總和 ÷ 每人差 = 人數。",
+  "trap": "把多和少的差額算錯，或忘記相加。"
+ },
+ "植樹問題": {
+  "key": "兩端都種：棵數=段數+1；只種一端：棵數=段數。",
+  "trap": "忘記兩端都種要+1，少算一棵。"
+ },
+ "平均": {
+  "key": "平均 × 個數 = 總和，先求總和再處理。",
+  "trap": "用平均直接加減，沒透過總和換算。"
+ },
+ "幾何面積": {
+  "key": "記熟公式：三角形=底×高÷2，圓=π×半徑²。",
+  "trap": "三角形忘記除以2，或圓用直徑當半徑。"
+ },
+ "幾何周長": {
+  "key": "周長是『邊長的總和』，圓周長=2×π×半徑。",
+  "trap": "把周長和面積公式搞混。"
+ },
+ "周長面積": {
+  "key": "先看清楚問的是周長還是面積，公式完全不同。",
+  "trap": "問周長卻算面積，或反過來。"
+ },
+ "圓": {
+  "key": "圓周長=2πr，圓面積=πr²，r 是半徑不是直徑。",
+  "trap": "把直徑當半徑代入，答案差兩倍或四倍。"
+ },
+ "體積": {
+  "key": "長方體體積=長×寬×高；正方體=邊長×邊長×邊長。",
+  "trap": "少乘一個維度，或把表面積當體積。"
+ },
+ "空間": {
+  "key": "空間題用『分類數』：角、稜、面、內部各算一次。",
+  "trap": "漏掉某一類，或重複算同一塊。"
+ },
+ "空間想像": {
+  "key": "切割塗色問題，按『塗幾面』分類去數最不會錯。",
+  "trap": "想像不出立體，亂數一通。"
+ },
+ "幾何": {
+  "key": "圖形題先把已知標在圖上，再用公式或性質推。",
+  "trap": "沒善用圖形性質，硬算反而錯。"
+ },
+ "幾何推理": {
+  "key": "三角形內角和=180度，這是很多題的突破口。",
+  "trap": "忘記內角和，或等腰、直角的性質沒用上。"
+ },
+ "角度": {
+  "key": "鐘面每一大格是 30 度（360÷12）。",
+  "trap": "每格算成別的度數，或時針位置沒算進去。"
+ },
+ "時鐘角度": {
+  "key": "鐘面每格 30 度，先算時針分針各差幾格。",
+  "trap": "只看分針忘了時針也會動。"
+ },
+ "規律": {
+  "key": "先看相鄰兩數『差多少』或『乘多少』，找出規律再套公式。",
+  "trap": "只看前兩個就下結論，沒驗證後面。"
+ },
+ "規律推理": {
+  "key": "等差用『首項+公差×(項數−1)』，平方數列看 n²。",
+  "trap": "公差或項數代錯，差一個位置。"
+ },
+ "數列規律": {
+  "key": "觀察是等差、等比、還是 n×(n+1) 這類特殊規律。",
+  "trap": "沒驗證規律對所有項都成立就套用。"
+ },
+ "圖形規律": {
+  "key": "把圖形數量列成數列，找出每次增加多少。",
+  "trap": "沒算清楚『第一個』和『之後每個增加』分開。"
+ },
+ "找規律": {
+  "key": "費氏數列：前兩數相加得下一數，常見要會認。",
+  "trap": "沒看出是前兩項相加的規律。"
+ },
+ "數列和": {
+  "key": "連續數求和用高斯法：(首+尾)×項數÷2。",
+  "trap": "項數數錯，或忘記最後要除以2。"
+ },
+ "邏輯": {
+  "key": "鴿籠原理：要『保證』就從最壞情況想起。",
+  "trap": "沒從最壞情況想，少算一個。"
+ },
+ "邏輯推理": {
+  "key": "真假話題用『假設法』：假設某人說真，逐一驗證有沒有矛盾。",
+  "trap": "沒有逐一驗證，或漏掉某個條件。"
+ },
+ "計數": {
+  "key": "分步用乘法，分類用加法；不重複的組合要除以重複次數。",
+  "trap": "握手、連線這類忘記除以2造成重複計算。"
+ },
+ "應用題": {
+  "key": "先把文字一句一句翻成算式，再計算。",
+  "trap": "沒列式直接心算，或讀錯題目條件。"
+ },
+ "成語運用": {
+  "key": "看『整句話的語氣』是正面還是負面，再選對應的成語。",
+  "trap": "只看成語認識不認識，沒對照句子情境。"
+ },
+ "成語辨析": {
+  "key": "把每個選項的成語意思各想一遍，再比對題目要的。",
+  "trap": "被熟悉的成語吸引，沒逐一確認意思。"
+ },
+ "成語": {
+  "key": "成語要連『典故和正確用法』一起記，不能只背字面。",
+  "trap": "望文生義，照字面猜意思而選錯。"
+ },
+ "字義": {
+  "key": "字在句子裡的意思要看上下文，同一個字位置不同意思不同。",
+  "trap": "用最常見的意思去套，忽略這裡是特殊用法。"
+ },
+ "字音": {
+  "key": "破音字要記『不同意思配不同讀音』。",
+  "trap": "全部讀成最熟悉的那個音。"
+ },
+ "字形": {
+  "key": "形近字、同音字要記正確寫法，特別是成語裡的字。",
+  "trap": "用同音字代替，例如『再接再厲』寫成『勵』。"
+ },
+ "詞義": {
+  "key": "先理解詞語的核心意思，再代回句子檢查通不通。",
+  "trap": "只看詞語表面，沒代回句子驗證。"
+ },
+ "詞語": {
+  "key": "詞語要看在句中扮演的角色和搭配對象。",
+  "trap": "搭配對象用錯（例如『改善困難』）。"
+ },
+ "近義詞": {
+  "key": "近義詞意思相近，但要選『最貼近』題目語境的。",
+  "trap": "選了意思沾邊但語境不合的。"
+ },
+ "反義詞": {
+  "key": "反義詞是『意思相反』，不是『不一樣』。",
+  "trap": "選成不相關的詞，而非真正相反的。"
+ },
+ "量詞": {
+  "key": "量詞和名詞有固定搭配，要平常累積。",
+  "trap": "用錯搭配，例如『一隻書』。"
+ },
+ "閱讀理解": {
+  "key": "先讀問題再回頭找線索，數字題要算清楚。",
+  "trap": "沒看完所有條件就選。"
+ },
+ "閱讀推論": {
+  "key": "從文中的動作、情境推測『沒明講』的訊息。",
+  "trap": "只看字面，沒做合理推論。"
+ },
+ "文意理解": {
+  "key": "理解整句話的寓意，常是比喻或借代。",
+  "trap": "照字面解釋，忽略它是比喻。"
+ },
+ "文意": {
+  "key": "古語或諺語要懂背後的道理，不能只看字。",
+  "trap": "用現代字面意思去理解古語。"
+ },
+ "修辭": {
+  "key": "譬喻有『像、如』；擬人把物當人；誇飾故意誇大。",
+  "trap": "譬喻和擬人、誇飾分不清。"
+ },
+ "病句": {
+  "key": "逐句檢查：有沒有語意重複、雙重否定、結構累贅。",
+  "trap": "沒一句一句檢查，憑感覺選。"
+ },
+ "標點": {
+  "key": "先判斷句子是『直述、疑問、感嘆』，再配對應標點。",
+  "trap": "疑問句用句號，或引號收尾位置錯。"
+ },
+ "部首": {
+  "key": "部首通常和字的意思有關（氵和水有關）。",
+  "trap": "把聲旁當部首。"
+ },
+ "造詞": {
+  "key": "想這個字平常和哪些字組成『常用詞』。",
+  "trap": "湊出不存在的詞。"
+ },
+ "造句": {
+  "key": "一字多義時，看哪個選項的用法和題目最接近。",
+  "trap": "選了同字但不同意思的。"
+ },
+ "一字多義": {
+  "key": "同一個字在不同詞裡意思不同，要逐一比對。",
+  "trap": "沒比對意思，看到同字就選。"
+ },
+ "句型": {
+  "key": "感嘆句 What+a+形容詞+名詞；How+形容詞。",
+  "trap": "What 和 How 感嘆句結構搞混。"
+ },
+ "語文常識": {
+  "key": "基本語文規則要熟，例如句子成分、標點用法。",
+  "trap": "基礎規則不熟造成判斷錯。"
+ },
+ "語詞搭配": {
+  "key": "動詞和名詞有固定搭配習慣，要靠平常累積。",
+  "trap": "用了意思接近但不搭配的動詞。"
+ },
+ "動詞時態": {
+  "key": "看時間線索：now→進行式，every day→現在式，yesterday→過去式。",
+  "trap": "忽略句中的時間提示詞，時態用錯。"
+ },
+ "be動詞": {
+  "key": "I 用 am，單數用 is，複數和 you 用 are。",
+  "trap": "主詞單複數判斷錯，be 動詞配錯。"
+ },
+ "動詞三單": {
+  "key": "第三人稱單數現在式，動詞要加 s/es。",
+  "trap": "忘記加 s，或 ch/sh/x 結尾忘記加 es。"
+ },
+ "動詞": {
+  "key": "助動詞（can/do）後面一定接『原形動詞』。",
+  "trap": "助動詞後面還加 s 或用過去式。"
+ },
+ "過去式": {
+  "key": "規則動詞加 ed，不規則要背（see→saw, go→went）。",
+  "trap": "不規則動詞硬加 ed。"
+ },
+ "時態": {
+  "key": "Look!/now 是現在進行式的強烈訊號。",
+  "trap": "看到 now 還用現在簡單式。"
+ },
+ "比較級": {
+  "key": "兩者比較用比較級，短形容詞加 er（去y變ier）。",
+  "trap": "忘記重複子音（big→bigger）或多加 more。"
+ },
+ "最高級": {
+  "key": "三者以上用 the+最高級，good→best 要背。",
+  "trap": "不規則最高級硬加 est。"
+ },
+ "形容詞比較": {
+  "key": "than 前面用比較級形式。",
+  "trap": "用原級或最高級放在 than 前。"
+ },
+ "代名詞": {
+  "key": "my/her+名詞；mine/hers 單獨用。",
+  "trap": "所有格形容詞和所有格代名詞混用。"
+ },
+ "冠詞": {
+  "key": "母音開頭用 an，子音開頭用 a。",
+  "trap": "只看字母不看發音，apple 用成 a。"
+ },
+ "介系詞": {
+  "key": "時間：星期/日期用 on，月份/年用 in，幾點用 at。",
+  "trap": "時間介系詞 in/on/at 混用。"
+ },
+ "疑問詞": {
+  "key": "What 問東西、Where 問地點、When 問時間、How 問方式。",
+  "trap": "疑問詞和答案對不上。"
+ },
+ "複數": {
+  "key": "規則加 s，特殊變化要背（child→children, leaf→leaves）。",
+  "trap": "不規則名詞硬加 s。"
+ },
+ "可數名詞": {
+  "key": "不可數名詞（milk, water）當單數，用 is。",
+  "trap": "把不可數當複數用 are。"
+ },
+ "there be": {
+  "key": "There is+單數，There are+複數，看 be 後面的名詞。",
+  "trap": "看錯 be 後面名詞的單複數。"
+ },
+ "否定句": {
+  "key": "一般動詞否定：I/you/複數用 don't，單數用 doesn't。",
+  "trap": "don't 和 doesn't 用反，或後面動詞加 s。"
+ },
+ "字彙": {
+  "key": "看英文解釋選字，把不認識的先排除。",
+  "trap": "只看認識的字，沒讀懂題目要的意思。"
+ },
+ "字彙分類": {
+  "key": "找出『不同類』的那一個，先確認其他三個同類。",
+  "trap": "沒確認分類標準就選。"
+ },
+ "閱讀": {
+  "key": "英文閱讀要把每個條件列出來，逐一比對。",
+  "trap": "漏掉某個條件，推論錯。"
+ },
+ "閱讀推理": {
+  "key": "把大小、順序、條件畫出來再判斷。",
+  "trap": "憑印象選，沒實際比對條件。"
+ },
+ "日常對話": {
+  "key": "想『真實情境會怎麼回答』，選最自然的。",
+  "trap": "選了文法對但情境不合的回答。"
+ },
+ "時間": {
+  "key": "幾點幾分的英文唸法：先說小時再說分鐘（7:30 = seven thirty）。",
+  "trap": "把小時和分鐘的順序說反。"
+ }
+};
+</script>
+<script>
+/* ============ 進度儲存（localStorage，關閉不歸零）============ */
+const SAVE_KEY = "gongdan_save_v1";
+function loadSave(){
+  try{ const s=localStorage.getItem(SAVE_KEY); return s?JSON.parse(s):null; }
+  catch(e){ return null; }
+}
+function persist(){
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      name:state.name, xp:state.xp, badges:state.badges,
+      streak:state.streak, lastPlay:state.lastPlay,
+      totalAns:state.totalAns, totalRight:state.totalRight,
+      unlockedStage:state.unlockedStage, seenIds:state.seenIds,
+      reviewQueue:state.reviewQueue||[],
+      dailyStats:state.dailyStats||{},
+      rivals:state.rivals
+    }));
+    flashSave();
+  }catch(e){ document.getElementById('saveTag').textContent="⚠️ 此瀏覽器未開放儲存，進度可能不保留"; }
+}
+let saveTimer;
+function flashSave(){
+  const t=document.getElementById('saveTag');
+  t.textContent="✓ 進度已儲存"; t.style.color="var(--mint)";
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{t.textContent="✓ 進度已自動儲存到這台裝置";},1500);
+}
+
+/* ============ 狀態 ============ */
+const state = {
+  name:"", xp:0, badges:[], streak:0, lastPlay:"",
+  totalAns:0, totalRight:0, unlockedStage:1, seenIds:[],
+  rivals:[ {n:"小華",x:0},{n:"阿明",x:0},{n:"婷婷",x:0},{n:"志強",x:0} ],
+  diff:0, bestComboEver:0,
+  pool:[], idx:0, right:0, combo:0, bestCombo:0, gained:0, wrongList:[],
+  // 家長儀表板用：每日紀錄。key=YYYY-MM-DD, value={ans:總答題,right:答對,sec:估算秒數,bySubj:{math:n,...}}
+  dailyStats:{},
+  qStartTime:0, // 當前題目顯示的時間戳(用於估算每題作答秒數)
+};
+const LV_TITLE=[
+"新手","學徒","練習生","好學生","資優生",
+"小學霸","小狀元","廩生","秀才","舉人",
+"貢士","會元","解元","榜眼","探花",
+"狀元","翰林","學士","博士","大儒",
+"宗師","賢者","哲人","智者","聖徒",
+"小龍士","赤龍士","金龍士","白龍士","玄龍士",
+"龍王","鳳凰士","麒麟士","白虎士","玄武士",
+"青龍王","朱雀王","聖獸守護","星辰騎士","銀河使者",
+"日月聖者","北極聖者","北斗仙師","太陽真君","攻旦神童",
+"攻旦俠客","攻旦劍聖","攻旦帝君","攻旦聖君","攻旦虎鯨王"
+];
+const PETS=[
+"🐣","🐤","🐥","🐧","🦆",
+"🦢","🦅","🦉","🦚","🦩",
+"🐬","🐳","🦈","🐊","🦕",
+"🐲","🐉","🦖","🦁","🐯",
+"🦄","🌟","✨","⭐","💫",
+"🔥","🌈","☄️","🌌","🌠",
+"⚡","🌪️","🌊","🔮","💠",
+"👑","💎","🏆","🥇","🎖️",
+"🦸","🧙","🧝","🧞","🐋",
+"🐬","🦈","🐳","🌊","🐋"
+];
+const PET_TOP_50 = "🐳";
+function lvNeed(lv){
+  // 經精算曲線：考前約10個月(每天2-3回)可練到Lv.50虎鯨王
+  if(lv<=5)  return lv*30;                   // Lv1-5：30,60,90,120,150 累計450（兩三天升完）
+  if(lv<=10) return 150+(lv-5)*40;           // Lv6-10：190~310（兩三週）
+  if(lv<=20) return 350+(lv-10)*55;          // Lv11-20：405~895（一兩個月）
+  if(lv<=35) return 950+(lv-20)*75;          // Lv21-35：1025~2075（中期穩定）
+  return 2150+(lv-35)*90;                    // Lv36-50：2240~3500（考前長期目標）
+}
+function recalcLevel(){
+  let lv=1,xp=state.xp;
+  while(xp>=lvNeed(lv)&&lv<LV_TITLE.length){ xp-=lvNeed(lv); lv++; }
+  return {lv,into:xp,need:lvNeed(lv)};
+}
+function petNick(lv){
+  if(lv>=50) return "攻旦虎鯨王";
+  if(lv>=45) return "聖獸";
+  if(lv>=40) return "星辰守護";
+  if(lv>=35) return "聖獸夥伴";
+  if(lv>=30) return "光輝靈獸";
+  if(lv>=25) return "智慧之獸";
+  if(lv>=20) return "巨龍夥伴";
+  if(lv>=15) return "傳說之獸";
+  if(lv>=10) return "水陸夥伴";
+  if(lv>=6)  return "智慧旦";
+  if(lv>=4)  return "小旦旦";
+  return "小旦";
+}
+
+/* ============ 渲染 ============ */
+function renderTop(){
+  const L=recalcLevel();
+  document.getElementById('lvl').textContent=L.lv;
+  document.getElementById('lvlTitle').textContent=LV_TITLE[L.lv-1];
+  document.getElementById('pet').textContent=PETS[Math.min(L.lv-1,PETS.length-1)];
+  document.getElementById('petName').textContent=
+    state.name? state.name+"的"+petNick(L.lv):"小旦";
+  document.getElementById('xpfill').style.width=Math.min(100,L.into/L.need*100)+"%";
+  document.getElementById('totalXp').textContent=state.xp;
+  document.getElementById('badgeCnt').textContent=state.badges.length;
+  document.getElementById('acc').textContent=
+    state.totalAns?Math.round(state.totalRight/state.totalAns*100)+"%":"—";
+  document.getElementById('doneCnt').textContent=state.totalAns;
+  document.getElementById('streak').textContent=state.streak;
+  renderBadges(); renderLB(); renderLvGrid();
+}
+function renderLvGrid(){
+  const L=recalcLevel();
+  const cur=L.lv;
+  // 下一目標提示
+  const hintEl=document.getElementById('lvNextLine');
+  if(hintEl){
+    if(cur>=50){
+      hintEl.innerHTML="🎉 你已是頂級「攻旦虎鯨王」！繼續累積經驗保持狀態！";
+    } else {
+      const nextLv=cur+1;
+      const remain=L.need-L.into;
+      hintEl.innerHTML=`再 <b style="color:var(--coral);font-size:18px;">${remain}</b> 經驗，升上 <b>Lv.${nextLv} ${LV_TITLE[nextLv-1]}</b> ${PETS[nextLv-1]}`;
+    }
+  }
+  // 50 格網格
+  let html="";
+  for(let i=1;i<=50;i++){
+    let cls="lv-cell ";
+    if(i===50) cls+="top ";
+    if(i<cur) cls+="done";
+    else if(i===cur) cls+="cur";
+    else if(i===cur+1) cls+="next";
+    else cls+="locked";
+    const emoji = i===50? PET_TOP_50 : PETS[i-1];
+    html+=`<div class="${cls}" title="Lv.${i} ${LV_TITLE[i-1]}">
+      <div class="lv-num">Lv.${i}</div>
+      <div class="lv-emoji">${emoji}</div>
+      <div class="lv-nm">${LV_TITLE[i-1]}</div>
+    </div>`;
+  }
+  const grid=document.getElementById('lvGrid');
+  if(grid) grid.innerHTML=html;
+}
+
+/* ============ 家長儀表板 ============ */
+function toggleDashboard(){
+  const body=document.getElementById('dashBody');
+  const arr=document.getElementById('dashArrow');
+  if(body.style.display==='none'){
+    body.style.display='block';
+    arr.textContent='▾';
+    renderDashboard();
+  } else {
+    body.style.display='none';
+    arr.textContent='▸';
+  }
+}
+function dateKeyDaysAgo(daysAgo){
+  const d=new Date();
+  d.setDate(d.getDate()-daysAgo);
+  return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+function dateLabel(daysAgo){
+  if(daysAgo===0) return "今天";
+  if(daysAgo===1) return "昨天";
+  const d=new Date(); d.setDate(d.getDate()-daysAgo);
+  return (d.getMonth()+1)+"/"+d.getDate();
+}
+function renderDashboard(){
+  const today=todayStr();
+  const ds=state.dailyStats||{};
+  // 今日
+  const td=ds[today]||{ans:0,right:0,sec:0,bySubj:{math:0,chinese:0,english:0}};
+  document.getElementById('dashToday').textContent="("+today+")";
+  document.getElementById('dashTodayAns').textContent=td.ans;
+  document.getElementById('dashTodayRight').textContent=td.right;
+  document.getElementById('dashTodayAcc').textContent= td.ans? Math.round(td.right/td.ans*100)+"%" : "—";
+  document.getElementById('dashTodayMin').textContent= Math.round(td.sec/60);
+  // 近7日柱狀
+  const last7=[];
+  for(let i=6;i>=0;i--){
+    const k=dateKeyDaysAgo(i);
+    last7.push({label:dateLabel(i), data: ds[k]||{ans:0,right:0,sec:0,bySubj:{math:0,chinese:0,english:0}}});
+  }
+  const maxAns=Math.max(1,...last7.map(d=>d.data.ans));
+  const barsEl=document.getElementById('dashBars');
+  barsEl.innerHTML=last7.map(d=>{
+    const h=Math.round(d.data.ans/maxAns*100);
+    const color = d.data.ans===0?'#e8e2f3' : d.data.ans>=15?'var(--ok)' : d.data.ans>=5?'var(--mango)':'var(--coral)';
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;">
+      <div style="font-size:10px;color:#8a7fa3;margin-bottom:3px;">${d.data.ans||''}</div>
+      <div style="width:100%;background:${color};border-radius:6px 6px 0 0;height:${Math.max(3,h)}%;transition:height .6s;"></div>
+    </div>`;
+  }).join("");
+  document.getElementById('dashBarLabels').innerHTML=last7.map(d=>
+    `<div style="flex:1;text-align:center;">${d.label}</div>`).join("");
+  // 7日總計
+  const sumAns=last7.reduce((s,d)=>s+d.data.ans,0);
+  const sumRight=last7.reduce((s,d)=>s+d.data.right,0);
+  const sumSec=last7.reduce((s,d)=>s+d.data.sec,0);
+  const playDays=last7.filter(d=>d.data.ans>0).length;
+  document.getElementById('dash7Ans').textContent=sumAns;
+  document.getElementById('dash7Min').textContent=Math.round(sumSec/60)+" 分";
+  document.getElementById('dash7Acc').textContent= sumAns? Math.round(sumRight/sumAns*100)+"%" : "—";
+  document.getElementById('dash7Days').textContent= playDays+" / 7";
+  // 各科分配
+  const subjSum={math:0,chinese:0,english:0};
+  last7.forEach(d=>{
+    for(const k in subjSum){ subjSum[k]+=(d.data.bySubj&&d.data.bySubj[k])||0; }
+  });
+  const totalSub=subjSum.math+subjSum.chinese+subjSum.english;
+  const SUBNAMES={math:"🔢 數學",chinese:"📖 國文",english:"🔤 英文"};
+  const SUBCOLORS={math:"#ff5d73",chinese:"#6b3fa0",english:"#3da5d9"};
+  document.getElementById('dashSubj').innerHTML=Object.keys(subjSum).map(k=>{
+    const v=subjSum[k];
+    const pct= totalSub? Math.round(v/totalSub*100):0;
+    return `<div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+        <span>${SUBNAMES[k]}</span><span style="color:#8a7fa3;">${v} 題 (${pct}%)</span>
+      </div>
+      <div style="background:#eee;border-radius:99px;height:8px;overflow:hidden;">
+        <div style="background:${SUBCOLORS[k]};height:100%;width:${pct}%;transition:width .6s;"></div>
+      </div>
+    </div>`;
+  }).join("");
+  // 全期
+  const L=recalcLevel();
+  document.getElementById('dashLv').textContent="Lv."+L.lv+" "+LV_TITLE[L.lv-1];
+  document.getElementById('dashXp').textContent=state.xp;
+  document.getElementById('dashTotalAns').textContent=state.totalAns;
+  document.getElementById('dashTotalAcc').textContent= state.totalAns? Math.round(state.totalRight/state.totalAns*100)+"%" : "—";
+  document.getElementById('dashStreak').textContent= state.streak+" 天";
+  document.getElementById('dashBadge').textContent= state.badges.length;
+}
+
+function renderBadges(){
+  const all=[
+    {id:"first",ico:"🌟",name:"踏出第一步"},
+    {id:"combo5",ico:"🔥",name:"五連擊"},
+    {id:"perfect",ico:"💯",name:"全對王"},
+    {id:"lv5",ico:"🎓",name:"資優生"},
+    {id:"stage4",ico:"🗺️",name:"闖關高手"},
+    {id:"hundred",ico:"💪",name:"百題達人"},
+    {id:"streak3",ico:"📅",name:"三日不斷"},
+    {id:"allstage",ico:"👑",name:"全破王者"},
+  ];
+  document.getElementById('badgeList').innerHTML=all.map(b=>{
+    const got=state.badges.includes(b.id);
+    return `<div class="bdg" style="opacity:${got?1:.25};filter:${got?'none':'grayscale(1)'}">
+      <div class="b-ico">${b.ico}</div><div class="b-nm">${b.name}</div></div>`;
+  }).join("");
+}
+function renderMap(){
+  let h="";
+  for(let i=1;i<=8;i++){
+    let cls=i<state.unlockedStage?"done":i===state.unlockedStage?"now":"lock";
+    let face=i<state.unlockedStage?"⭐":i===state.unlockedStage?i:"🔒";
+    h+=`<div class="node ${cls}">${face}</div>`;
+  }
+  document.getElementById('mapEl').innerHTML=h;
+}
+function renderLB(){
+  let people=[{n:(state.name||"我"),x:state.xp,me:true},
+    ...state.rivals.map(r=>({n:r.n,x:r.x,me:false}))];
+  people.sort((a,b)=>b.x-a.x);
+  document.getElementById('lbList').innerHTML=people.map((p,i)=>{
+    const rc=i===0?"r1":i===1?"r2":i===2?"r3":"";
+    const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1);
+    return `<div class="lb-row ${p.me?'me':''}">
+      <div class="lb-rank ${rc}">${medal}</div>
+      <div class="lb-name">${p.n}${p.me?' （你）':''}</div>
+      <div class="lb-xp">${p.x} ⭐</div></div>`;
+  }).join("");
+  renderPK();
+}
+function renderPK(){
+  const L=recalcLevel();
+  document.getElementById('pkPet').textContent= L.lv>=50? PET_TOP_50 : PETS[Math.min(L.lv-1,PETS.length-1)];
+  document.getElementById('pkName').textContent= (state.name||"我") + "的戰績";
+  document.getElementById('pkLvl').textContent="Lv."+L.lv+" "+LV_TITLE[L.lv-1];
+  document.getElementById('pkXp').textContent=state.xp;
+  document.getElementById('pkBadge').textContent=state.badges.length;
+  document.getElementById('pkAcc').textContent= state.totalAns? Math.round(state.totalRight/state.totalAns*100)+"%" : "—";
+  document.getElementById('pkDone').textContent=state.totalAns;
+  const d=new Date();
+  document.getElementById('pkDate').textContent= d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();
+}
+function sharePK(){
+  const L=recalcLevel();
+  const txt = `🏆 我在攻旦小學堂的戰績 🏆\n\n${state.name||"我"} | Lv.${L.lv} ${LV_TITLE[L.lv-1]}\n⭐ 經驗 ${state.xp}\n🎖️ 徽章 ${state.badges.length} 個\n🎯 正確率 ${state.totalAns?Math.round(state.totalRight/state.totalAns*100)+"%":"—"}\n📚 已練 ${state.totalAns} 題\n\n你呢？來挑戰我！🔥`;
+  // 嘗試用Web Share API（iOS Safari支援）
+  if(navigator.share){
+    navigator.share({title:"我的攻旦小學堂戰績",text:txt})
+      .then(()=>floatPop("分享成功！⚔️"))
+      .catch(()=>copyPK(txt));
+  } else {
+    copyPK(txt);
+  }
+}
+function copyPK(txt){
+  // 備援：複製到剪貼簿
+  try {
+    navigator.clipboard.writeText(txt).then(()=>{
+      alert("戰績已複製到剪貼簿！\n貼到 LINE 給同學就行。\n\n或是直接截圖上面的戰績卡分享。");
+    }).catch(()=>showCopyFallback(txt));
+  } catch(e){ showCopyFallback(txt); }
+}
+function showCopyFallback(txt){
+  alert("請手動截圖上面的戰績卡分享給同學！\n\n（手機：同時按下「電源鍵+音量上鍵」可截圖）");
+}
+function addRivalScore(){
+  // 模擬同學也在練習，分數會慢慢增加，營造良性競爭
+  state.rivals.forEach(r=>{ r.x += Math.floor(Math.random()*40)+10; });
+  persist(); renderLB();
+  floatPop("同學也在努力！💨");
+}
+
+function awardBadge(id){
+  if(!state.badges.includes(id)){
+    state.badges.push(id);
+    setTimeout(()=>floatPop("🏆 新徽章！"),400);
+  }
+}
+function floatPop(txt){
+  const e=document.createElement('div');
+  e.className='pop';e.textContent=txt;
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),1200);
+}
+function petCheer(){
+  const p=document.getElementById('pet');
+  p.classList.remove('happy');void p.offsetWidth;p.classList.add('happy');
+}
+
+/* ============ 出題 ============ */
+let pendingDiff=0;
+function setDiff(d,btn){
+  pendingDiff=d;
+  document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+const SUBJ_NAME={math:"數學",chinese:"國文",english:"英文"};
+const COACH_AV={math:"🧮",chinese:"🦉",english:"🔤"};
+
+function startQuiz(subj){
+  let bank=QUESTION_BANK.slice();
+  if(subj!=="mix") bank=bank.filter(q=>q.subject===subj);
+  if(pendingDiff>0) bank=bank.filter(q=>q.diff===pendingDiff);
+  if(bank.length===0) bank=QUESTION_BANK.slice();
+  if(!state.reviewQueue) state.reviewQueue=[];
+  // 出題優先順序：① 待複習(答錯或猜對的) ② 沒做過的新題 ③ 做過的舊題
+  const review=bank.filter(q=>state.reviewQueue.includes(q.id));
+  const fresh=bank.filter(q=>!state.seenIds.includes(q.id)&&!state.reviewQueue.includes(q.id));
+  const old=bank.filter(q=>state.seenIds.includes(q.id)&&!state.reviewQueue.includes(q.id));
+  review.sort(()=>Math.random()-0.5);
+  fresh.sort(()=>Math.random()-0.5); old.sort(()=>Math.random()-0.5);
+  // 每回最多放2題複習題，其餘給新題，確保有複習也有新內容
+  const pickReview=review.slice(0,2);
+  const rest=[...fresh,...old].filter(q=>!pickReview.includes(q));
+  const ordered=[...pickReview,...rest];
+  state.pool=ordered.slice(0,Math.min(5,ordered.length)).sort(()=>Math.random()-0.5);
+  // 【關鍵修正】為每題打亂選項順序，避免答案永遠在A被小孩猜中
+  // 做法：建立 shuffledOptions 與 shuffledAnswer，全程只用這兩個，確保對應不錯位
+  state.pool=state.pool.map(q=>{
+    const idxArr=q.options.map((_,i)=>i);            // [0,1,2,3]
+    for(let i=idxArr.length-1;i>0;i--){              // Fisher-Yates 洗牌
+      const j=Math.floor(Math.random()*(i+1));
+      [idxArr[i],idxArr[j]]=[idxArr[j],idxArr[i]];
+    }
+    const shuffledOptions=idxArr.map(i=>q.options[i]);
+    const shuffledAnswer=idxArr.indexOf(q.answer);   // 原正解在新陣列的位置
+    return {...q, options:shuffledOptions, answer:shuffledAnswer};
+  });
+  // 本回合出到的複習題，先從佇列移除（這次答對就不再纏著、答錯/猜對會在answer重新加回）
+  state.pool.forEach(q=>{
+    const i=state.reviewQueue.indexOf(q.id);
+    if(i>=0) state.reviewQueue.splice(i,1);
+  });
+  state.idx=0;state.right=0;state.combo=0;state.bestCombo=0;
+  state.gained=0;state.wrongList=[];
+  show('screenQuiz');
+  document.getElementById('qTotal').textContent=state.pool.length;
+  loadQuestion();
+}
+function loadQuestion(){
+  const q=state.pool[state.idx];
+  document.getElementById('qIdx').textContent=state.idx+1;
+  document.getElementById('qTag').textContent=(SUBJ_NAME[q.subject]||"綜合")+"・"+q.topic;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qProgress').style.width=(state.idx/state.pool.length*100)+"%";
+  document.getElementById('comboTxt').textContent=
+    state.combo>=2?"🔥 "+state.combo+" 連擊中！":"";
+  const L=["A","B","C","D","E"];
+  document.getElementById('optBox').innerHTML=q.options.map((o,i)=>
+    `<button class="opt" onclick="answer(${i})"><span class="letter">${L[i]}</span>${o}</button>`).join("");
+  document.getElementById('feedback').className='feedback';
+  state.qStartTime=Date.now(); // 開始計時這一題
+}
+/* 把每題教學拆成五段：考什麼→觀念→分步想→你錯哪→記住這句 */
+function teachHTML(q,pickedIdx){
+  const t=TOPIC_TEACH[q.topic]||{key:"先看清楚題目問什麼，一步一步想，不要急著猜。",trap:"最常見的錯是沒看完題目就選答案。"};
+  const cL="ABCDE"[q.answer];
+  const yL=(pickedIdx!=null&&pickedIdx!==q.answer)?"ABCDE"[pickedIdx]:null;
+  const trapLine = yL
+    ? `你選了 <b>${yL}</b>，正解是 <b>${cL}</b>。${t.trap}`
+    : `${t.trap}`;
+  return `
+    <div style="background:#fff;border-radius:14px;padding:14px;margin-top:4px;">
+      <div style="font-weight:800;color:var(--grape-deep);margin-bottom:8px;">🎯 這題在考什麼</div>
+      <div style="margin-bottom:12px;">這是「<b>${q.topic}</b>」的題目。${q.subject==='math'?'私中數學就愛這種要動腦的題，不是背公式就好。':q.subject==='chinese'?'國文重理解，不能只看字面。':'英文重觀念，不是死背單字。'}</div>
+      <div style="font-weight:800;color:var(--grape-deep);margin-bottom:8px;">🔑 要記住的觀念</div>
+      <div style="background:#f0e9fb;border-radius:10px;padding:10px;margin-bottom:12px;">${t.key}</div>
+      <div style="font-weight:800;color:var(--grape-deep);margin-bottom:8px;">📝 一步一步想一遍</div>
+      <div style="margin-bottom:12px;line-height:1.9;">${q.sol}</div>
+      <div style="font-weight:800;color:var(--no);margin-bottom:8px;">⚠️ 最容易錯的地方</div>
+      <div style="background:#fdeceb;border-radius:10px;padding:10px;margin-bottom:12px;">${trapLine}</div>
+      <div style="font-weight:800;color:var(--mint);margin-bottom:6px;">💡 下次遇到，先想這句</div>
+      <div style="font-style:italic;color:var(--grape-deep);">「${t.key}」</div>
+    </div>`;
+}
+
+function answer(pick){
+  const q=state.pool[state.idx];
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.answer)b.classList.add('correct');
+    if(i===pick&&pick!==q.answer)b.classList.add('wrong');
+  });
+  const correct=pick===q.answer;
+  state.totalAns++;
+  if(!state.seenIds.includes(q.id)) state.seenIds.push(q.id);
+  if(state.totalAns>=100) awardBadge('hundred');
+  // === 寫入家長儀表板每日紀錄 ===
+  const today=todayStr();
+  if(!state.dailyStats[today]) state.dailyStats[today]={ans:0,right:0,sec:0,bySubj:{math:0,chinese:0,english:0}};
+  const d=state.dailyStats[today];
+  d.ans++;
+  if(correct) d.right++;
+  // 估算這題秒數，封頂180秒避免發呆灌水
+  const elapsed=state.qStartTime? Math.min(180,Math.round((Date.now()-state.qStartTime)/1000)) : 0;
+  d.sec+=elapsed;
+  if(d.bySubj[q.subject]!==undefined) d.bySubj[q.subject]++;
+  const fb=document.getElementById('feedback');
+  const fbBody=document.getElementById('fbBody');
+  document.getElementById('fbAv').textContent=COACH_AV[q.subject]||"🦉";
+  document.getElementById('nextBtn').style.display='none'; // 先藏，確認懂了或回答猜沒猜才出現
+
+  if(correct){
+    // 防亂猜：先不給分，問是真的會還是猜的
+    fb.className='feedback good show';
+    document.getElementById('fbTitle').textContent="答對了！先誠實回答老師一個問題 🦉";
+    fbBody.innerHTML=`答案正確 ✓ 在拿分數之前，老師想知道：
+      <div style="margin:14px 0;padding:12px;background:#fff;border-radius:12px;">
+        <b>這題你是「想出來的」還是「用猜的」？</b><br>
+        <span style="font-size:13px;color:#8a7fa3;">誠實回答才會真的進步，猜的也沒關係，老師會幫你弄懂。</span>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="next-btn" style="margin:0;flex:1;background:linear-gradient(135deg,var(--mint),#5dd9b8);"
+          onclick="resolveCorrect(${pick},true)">我是想出來的 ✏️</button>
+        <button class="next-btn" style="margin:0;flex:1;background:#bbb;"
+          onclick="resolveCorrect(${pick},false)">老實說我用猜的 🤔</button>
+      </div>`;
+  }else{
+    state.combo=0;state.wrongList.push(q);
+    if(!state.reviewQueue) state.reviewQueue=[];
+    if(!state.reviewQueue.includes(q.id)) state.reviewQueue.push(q.id); // 錯題之後會再出
+    fb.className='feedback bad show';
+    document.getElementById('fbTitle').textContent="沒關係，這題我們一起弄懂 🦉";
+    fbBody.innerHTML=`<b>錯題才是進步最快的地方。</b>不要急著跳過，把下面看完，這題的分數其實藏在這裡。
+      ${teachHTML(q,pick)}
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+        <button class="next-btn" style="margin:0;background:linear-gradient(135deg,var(--mint),#5dd9b8);"
+          onclick="markUnderstood()">我看懂了，這題之後會再考我一次 ✓</button>
+      </div>`;
+  }
+  const L=recalcLevel();
+  if(L.lv>=5)awardBadge('lv5');
+  renderTop();
+  persist();
+}
+
+/* 答對後依「是否用猜」決定給分與連擊（防亂猜核心） */
+function resolveCorrect(pick,reallyKnew){
+  const q=state.pool[state.idx];
+  const fb=document.getElementById('feedback');
+  const fbBody=document.getElementById('fbBody');
+  if(reallyKnew){
+    state.right++;state.totalRight++;state.combo++;
+    state.bestCombo=Math.max(state.bestCombo,state.combo);
+    state.bestComboEver=Math.max(state.bestComboEver,state.combo);
+    let gain=10+(q.diff-1)*5+Math.min(state.combo-1,5)*3;
+    state.xp+=gain;state.gained+=gain;
+    document.getElementById('fbTitle').textContent="太好了，這分你拿得實在！";
+    let comboLine=state.combo>=2?
+      `<br><span class="lbl">🔥 ${state.combo} 連擊！</span> 連續真的會，加成更多！`:"";
+    fbBody.innerHTML=`<b>${q.cheer||"做得好！"}</b>
+      <span style="color:var(--ok);font-weight:800;">+${gain} 經驗</span>${comboLine}
+      <br><br>再看一次完整解法，加深印象：${teachHTML(q,null)}`;
+    petCheer();floatPop("+"+gain+" ⭐");
+    if(state.combo===5)awardBadge('combo5');
+    awardBadge('first');
+  }else{
+    // 猜對：不給連擊、只給少少分、這題列入會再考
+    state.combo=0;
+    state.right++; state.totalRight++; // 仍算對（畢竟答對）
+    let gain=3; state.xp+=gain; state.gained+=gain;
+    if(!state.reviewQueue) state.reviewQueue=[];
+    if(!state.reviewQueue.includes(q.id)) state.reviewQueue.push(q.id);
+    document.getElementById('fbTitle').textContent="謝謝你誠實！現在把它真的學會 🦉";
+    fbBody.innerHTML=`猜對不算真的會，所以這題只給 <b>+${gain}</b> 經驗、連擊歸零，<b>而且之後會再考你一次</b>，直到你真的弄懂為止。這樣才不會考試時運氣用完。現在認真看老師講解：
+      ${teachHTML(q,null)}`;
+  }
+  const L=recalcLevel();
+  if(L.lv>=5)awardBadge('lv5');
+  renderTop();
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='block';
+  nb.textContent=state.idx>=state.pool.length-1?"看本回合成績 🎯":"下一題 →";
+  persist();
+}
+
+/* 答錯看完教學，按「我看懂了」才放行下一題 */
+function markUnderstood(){
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='block';
+  nb.textContent=state.idx>=state.pool.length-1?"看本回合成績 🎯":"下一題 →";
+  floatPop("這題之後會再考你 📌");
+}
+function nextQuestion(){
+  if(state.idx>=state.pool.length-1){ finishRound(); return; }
+  state.idx++;loadQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+function finishRound(){
+  const total=state.pool.length;
+  const score=Math.round(state.right/total*100);
+  if(state.right===total&&total>=5)awardBadge('perfect');
+  if(score>=60&&state.unlockedStage<=8){
+    state.unlockedStage++;
+    if(state.unlockedStage>=5)awardBadge('stage4');
+    if(state.unlockedStage>8)awardBadge('allstage');
+  }
+  // 打卡（同一天只算一次連續，跨天才+1）
+  const t=todayStr();
+  if(state.lastPlay!==t){
+    state.streak = state.lastPlay? state.streak+1 : 1;
+    state.lastPlay=t;
+  }
+  if(state.streak>=3)awardBadge('streak3');
+  document.getElementById('dailyMsg').textContent="太棒了，今天已完成練習！明天再來保持連勝 🔥";
+
+  show('screenResult');
+  document.getElementById('resScore').textContent=score;
+  document.getElementById('resRight').textContent=state.right+"/"+total;
+  document.getElementById('resXp').textContent="+"+state.gained;
+  document.getElementById('resBest').textContent=state.bestCombo;
+  let emo,msg,coach;
+  if(score===100){emo="🏆";msg="完美！全部答對！";
+    coach="太厲害了！全對代表這單元觀念非常扎實。私中考題會『換包裝』考同樣觀念，你已準備好，明天挑戰更難的關卡吧！";}
+  else if(score>=80){emo="🎉";msg="很棒！表現優秀";
+    coach="非常好！再把錯題詳解看一次，把那一兩個觀念補起來就能穩拿高分。私中數學同分比序第一，這科多拿分超關鍵！";}
+  else if(score>=60){emo="💪";msg="及格！繼續加油";
+    coach="抓到一半以上，方向對了！點下面看錯題詳解——私中考的就是『靈活運用』，把錯題觀念想通比多寫十題更有用。";}
+  else{emo="🌱";msg="別灰心，這是成長的開始";
+    coach="這回合較難沒關係，高手都是從錯題長出來的。我們一題一題弄懂，明天再練一次，你會看到進步。慢慢來，老師陪你。";}
+  document.getElementById('resEmoji').textContent=emo;
+  document.getElementById('resMsg').textContent=msg;
+  document.getElementById('resCoach').textContent=coach;
+  document.getElementById('reviewBtn').style.display=state.wrongList.length?"block":"none";
+  renderTop();renderMap();persist();
+}
+function reviewWrong(){
+  if(!state.wrongList.length)return;
+  let html=state.wrongList.map((q,i)=>
+    `<div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px dashed #ddd;">
+      <b style="color:var(--grape-deep);">錯題 ${i+1}（${SUBJ_NAME[q.subject]||"綜合"}・${q.topic}）</b><br>
+      <div style="margin:8px 0;font-weight:600;">${q.q}</div>
+      <div style="color:var(--ok);font-weight:700;">✓ 正解：${["A","B","C","D","E"][q.answer]}. ${q.options[q.answer]}</div>
+      <div style="margin-top:6px;color:#3a3354;line-height:1.7;">${q.sol}</div></div>`).join("");
+  document.getElementById('resultCard').innerHTML=
+    `<h2 class="section">錯題詳解 📋</h2>
+     <p class="sub">把這幾題的觀念弄懂，比多寫題目更重要！</p>${html}
+     <button class="next-btn" onclick="goHome()">我懂了，回主畫面 🏠</button>`;
+}
+function show(id){
+  ['screenHome','screenQuiz','screenResult'].forEach(s=>
+    document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){
+  // 還原結算卡片內容（避免錯題詳解蓋掉）
+  location.hash="";
+  renderTop();renderMap();show('screenHome');
+}
+function resetAll(){
+  if(confirm("確定要清除所有進度嗎？等級、徽章、排行榜都會歸零，無法復原。")){
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
+  }
+}
+
+/* ============ 取名 / 啟動 ============ */
+function confirmName(){
+  const v=document.getElementById('nameInput').value.trim();
+  state.name = v || "我";
+  document.getElementById('nameModal').classList.add('hidden');
+  persist();renderTop();
+}
+function boot(){
+  const s=loadSave();
+  if(s){
+    Object.assign(state,{
+      name:s.name||"我", xp:s.xp||0, badges:s.badges||[],
+      streak:s.streak||0, lastPlay:s.lastPlay||"",
+      totalAns:s.totalAns||0, totalRight:s.totalRight||0,
+      unlockedStage:s.unlockedStage||1, seenIds:s.seenIds||[],
+      reviewQueue:s.reviewQueue||[],
+      dailyStats:s.dailyStats||{},
+      rivals:s.rivals||state.rivals
+    });
+    document.getElementById('nameModal').classList.add('hidden');
+    // 跨天回來：若昨天有玩，連續天數的提示重置
+    if(state.lastPlay && state.lastPlay!==todayStr()){
+      document.getElementById('dailyMsg').textContent="新的一天！今天還沒練習，保持連勝就靠現在！";
+    }
+  }
+  // 結算卡片原始HTML備份還原（reviewWrong會改寫）
+  renderTop();renderMap();
+}
+// 備份結算卡原始結構，goHome 後復原
+const _resultHTML = document.getElementById('resultCard').innerHTML;
+const _origGoHome = goHome;
+goHome = function(){
+  document.getElementById('resultCard').innerHTML=_resultHTML;
+  _origGoHome();
+};
+boot();
+</script>
+</body>
+</html>
